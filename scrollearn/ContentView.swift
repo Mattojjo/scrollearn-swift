@@ -11,16 +11,8 @@ struct ContentView: View {
     @State private var fundamentals: [Fundamental] = []
     @State private var selectedIndex: Int = 0
     @State private var dragOffset: CGFloat = 0
+    @State private var indexBadgeSize: CGSize = .zero
     @Environment(\.scenePhase) var scenePhase
-    
-    let backgroundGradient = LinearGradient(
-        gradient: Gradient(colors: [
-            Color(red: 0.12, green: 0.12, blue: 0.12),
-            Color(red: 0.08, green: 0.08, blue: 0.08)
-        ]),
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
     
     var body: some View {
         ZStack {
@@ -32,20 +24,29 @@ struct ContentView: View {
                         .foregroundColor(.gray)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(backgroundGradient.ignoresSafeArea())
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            Color(red: 0.12, green: 0.12, blue: 0.12),
+                            Color(red: 0.08, green: 0.08, blue: 0.08)
+                        ]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .ignoresSafeArea()
+                )
             } else {
                 GeometryReader { geometry in
                     ZStack(alignment: .top) {
                         VStack(spacing: 0) {
                             ForEach(Array(fundamentals.enumerated()), id: \.element.id) { index, fundamental in
-                                FundamentalCardView(fundamental: fundamental)
+                                FundamentalCardView(fundamental: fundamental, badgeSize: indexBadgeSize)
                                     .frame(height: geometry.size.height)
                                     .id(index)
                             }
                         }
                         .offset(y: -CGFloat(selectedIndex) * geometry.size.height + dragOffset)
-                        .animation(.spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0), value: selectedIndex)
-                        .drawingGroup()
+                        .animation(.easeInOut(duration: 0.4), value: selectedIndex)
                         .gesture(
                             DragGesture()
                                 .onChanged { value in
@@ -53,15 +54,14 @@ struct ContentView: View {
                                 }
                                 .onEnded { value in
                                     let threshold = geometry.size.height * 0.15
+                                    _ = value.predictedEndLocation.y - value.location.y
                                     
                                     if value.translation.height < -threshold && selectedIndex < fundamentals.count - 1 {
                                         selectedIndex += 1
                                     } else if value.translation.height > threshold && selectedIndex > 0 {
                                         selectedIndex -= 1
                                     }
-                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0)) {
-                                        dragOffset = 0
-                                    }
+                                    dragOffset = 0
                                 }
                         )
                     }
@@ -83,6 +83,17 @@ struct ContentView: View {
                             .padding(.vertical, 6)
                             .background(Color.gray.opacity(0.1))
                             .cornerRadius(8)
+                            .background(
+                                GeometryReader { geometry in
+                                    Color.clear
+                                        .preference(key: BadgeSizePreferenceKey.self, value: geometry.size)
+                                }
+                            )
+                            .onPreferenceChange(BadgeSizePreferenceKey.self) { newSize in
+                                if newSize != .zero {
+                                    indexBadgeSize = newSize
+                                }
+                            }
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 60)
@@ -92,18 +103,21 @@ struct ContentView: View {
                 .ignoresSafeArea()
             }
         }
-        .task {
-            await loadFundamentalsAsync()
-        }
-        .onChange(of: scenePhase) { oldPhase, newPhase in
-            if newPhase == .active {
-                dragOffset = 0
-            }
+        .onAppear {
+            loadFundamentals()
         }
     }
     
-    private func loadFundamentalsAsync() async {
-        fundamentals = await FundamentalsManager.shared.loadFundamentalsAsync()
+    private func loadFundamentals() {
+        fundamentals = FundamentalsManager.shared.loadFundamentals()
+    }
+}
+
+private struct BadgeSizePreferenceKey: PreferenceKey {
+    static var defaultValue: CGSize = .zero
+
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+        value = nextValue()
     }
 }
 

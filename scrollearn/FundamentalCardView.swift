@@ -7,17 +7,16 @@
 
 import SwiftUI
 
-let cardBackground = LinearGradient(
-    gradient: Gradient(colors: [
-        Color(red: 0.12, green: 0.12, blue: 0.12),
-        Color(red: 0.08, green: 0.08, blue: 0.08)
-    ]),
-    startPoint: .topLeading,
-    endPoint: .bottomTrailing
-)
+let cardBackground = Color(red: 0.10, green: 0.10, blue: 0.10)
 
 struct FundamentalCardView: View {
     let fundamental: Fundamental
+    let badgeSize: CGSize
+
+    init(fundamental: Fundamental, badgeSize: CGSize = .zero) {
+        self.fundamental = fundamental
+        self.badgeSize = badgeSize
+    }
     
     var body: some View {
         ZStack {
@@ -32,7 +31,7 @@ struct FundamentalCardView: View {
                     
                     Spacer()
                     
-                    DifficultyBadge(difficulty: fundamental.difficulty)
+                    DifficultyBadge(difficulty: fundamental.difficulty, size: badgeSize)
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 120)
@@ -48,7 +47,7 @@ struct FundamentalCardView: View {
                         .multilineTextAlignment(.center)
                     
                     Spacer()
-                        .frame(height: 20)
+                        .frame(height: 10)
                     
                     Text(fundamental.description)
                         .font(.system(size: 22, weight: .regular, design: .default))
@@ -59,9 +58,12 @@ struct FundamentalCardView: View {
                     Divider()
                         .background(Color.gray.opacity(0.3))
                     
+                    Spacer()
+                        .frame(height: 20)
+                    
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Key Points")
-                            .font(.system(size: 14, weight: .semibold, design: .default))
+                            .font(.system(size: 16, weight: .semibold, design: .default))
                             .foregroundColor(.gray)
                             .tracking(0.3)
                         
@@ -86,8 +88,6 @@ struct FundamentalCardView: View {
                 .padding(.horizontal, 24)
                 .padding(.vertical, 30)
                 
-                Spacer()
-                
                 VStack {
                     HStack {
                         Text("Scroll to learn more")
@@ -103,6 +103,9 @@ struct FundamentalCardView: View {
                     .padding(.horizontal, 24)
                     .padding(.bottom, 20)
                 }
+                
+                Spacer()
+                    .frame(height: 30)
             }
         }
         .drawingGroup()
@@ -111,24 +114,31 @@ struct FundamentalCardView: View {
 
 struct DifficultyBadge: View {
     let difficulty: Fundamental.Difficulty
+    let size: CGSize
     
     var body: some View {
         HStack(spacing: 6) {
             Image(systemName: "star.fill")
                 .font(.system(size: 10))
+                .foregroundColor(.orange)
             
             Text(difficulty.rawValue)
                 .font(.system(size: 12, weight: .semibold, design: .default))
+                .foregroundColor(.orange)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .frame(
+                    width: size.width > 0 ? size.width : nil,
+                    height: size.height > 0 ? size.height : nil,
+                    alignment: .center
+                )
+                .background(Color.orange.opacity(0.15))
+                .cornerRadius(8)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.orange.opacity(0.4), lineWidth: 1)
+                )
         }
-        .foregroundColor(.orange)
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
-        .background(Color.orange.opacity(0.15))
-        .cornerRadius(8)
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.orange.opacity(0.4), lineWidth: 1)
-        )
     }
 }
 
@@ -140,6 +150,7 @@ struct DifficultyBadge: View {
             category: "SOLID Principles",
             difficulty: .beginner,
             keyPoints: ["One reason to change", "Focused responsibility", "Easier to test and maintain"]
-        )
+        ),
+        badgeSize: CGSize(width: 96, height: 28)
     )
 }
