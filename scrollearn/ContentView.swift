@@ -13,6 +13,15 @@ struct ContentView: View {
     @State private var dragOffset: CGFloat = 0
     @Environment(\.scenePhase) var scenePhase
     
+    let backgroundGradient = LinearGradient(
+        gradient: Gradient(colors: [
+            Color(red: 0.12, green: 0.12, blue: 0.12),
+            Color(red: 0.08, green: 0.08, blue: 0.08)
+        ]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+    
     var body: some View {
         ZStack {
             if fundamentals.isEmpty {
@@ -23,17 +32,7 @@ struct ContentView: View {
                         .foregroundColor(.gray)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            Color(red: 0.12, green: 0.12, blue: 0.12),
-                            Color(red: 0.08, green: 0.08, blue: 0.08)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    .ignoresSafeArea()
-                )
+                .background(backgroundGradient.ignoresSafeArea())
             } else {
                 GeometryReader { geometry in
                     ZStack(alignment: .top) {
@@ -41,10 +40,12 @@ struct ContentView: View {
                             ForEach(Array(fundamentals.enumerated()), id: \.element.id) { index, fundamental in
                                 FundamentalCardView(fundamental: fundamental)
                                     .frame(height: geometry.size.height)
+                                    .id(index)
                             }
                         }
                         .offset(y: -CGFloat(selectedIndex) * geometry.size.height + dragOffset)
                         .animation(.spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0), value: selectedIndex)
+                        .drawingGroup()
                         .gesture(
                             DragGesture()
                                 .onChanged { value in
@@ -91,8 +92,8 @@ struct ContentView: View {
                 .ignoresSafeArea()
             }
         }
-        .onAppear {
-            loadFundamentals()
+        .task {
+            await loadFundamentalsAsync()
         }
         .onChange(of: scenePhase) { oldPhase, newPhase in
             if newPhase == .active {
@@ -101,8 +102,8 @@ struct ContentView: View {
         }
     }
     
-    private func loadFundamentals() {
-        fundamentals = FundamentalsManager.shared.loadFundamentals()
+    private func loadFundamentalsAsync() async {
+        fundamentals = await FundamentalsManager.shared.loadFundamentalsAsync()
     }
 }
 

@@ -7,20 +7,21 @@
 
 import SwiftUI
 
+let cardBackground = LinearGradient(
+    gradient: Gradient(colors: [
+        Color(red: 0.12, green: 0.12, blue: 0.12),
+        Color(red: 0.08, green: 0.08, blue: 0.08)
+    ]),
+    startPoint: .topLeading,
+    endPoint: .bottomTrailing
+)
+
 struct FundamentalCardView: View {
     let fundamental: Fundamental
     
     var body: some View {
         ZStack {
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color(red: 0.12, green: 0.12, blue: 0.12),
-                    Color(red: 0.08, green: 0.08, blue: 0.08)
-                ]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            cardBackground.ignoresSafeArea()
             
             VStack(spacing: 0) {
                 HStack {
@@ -46,8 +47,11 @@ struct FundamentalCardView: View {
                         .lineLimit(4)
                         .multilineTextAlignment(.center)
                     
+                    Spacer()
+                        .frame(height: 20)
+                    
                     Text(fundamental.description)
-                        .font(.system(size: 18, weight: .regular, design: .default))
+                        .font(.system(size: 22, weight: .regular, design: .default))
                         .foregroundColor(.gray)
                         .lineLimit(5)
                         .multilineTextAlignment(.center)
@@ -101,6 +105,7 @@ struct FundamentalCardView: View {
                 }
             }
         }
+        .drawingGroup()
     }
 }
 
