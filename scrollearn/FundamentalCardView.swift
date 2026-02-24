@@ -12,7 +12,6 @@ struct FundamentalCardView: View {
     
     var body: some View {
         ZStack {
-            // Background gradient
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color(red: 0.1, green: 0.1, blue: 0.2),
@@ -24,34 +23,28 @@ struct FundamentalCardView: View {
             .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // Top spacer
-                VStack {
-                    HStack {
-                        Text(fundamental.category)
-                            .font(.caption)
-                            .foregroundColor(.white.opacity(0.7))
-                            .tracking(0.5)
-                        
-                        Spacer()
-                        
-                        DifficultyBadge(difficulty: fundamental.difficulty)
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.top, 20)
-                    .padding(.bottom, 10)
+                HStack {
+                    Text(fundamental.category)
+                        .font(.caption)
+                        .foregroundColor(.white.opacity(0.7))
+                        .tracking(0.5)
+                    
+                    Spacer()
+                    
+                    DifficultyBadge(difficulty: fundamental.difficulty)
                 }
+                .padding(.horizontal, 24)
+                .padding(.top, 20)
+                .padding(.bottom, 10)
                 
                 Spacer()
                 
-                // Main content
                 VStack(alignment: .leading, spacing: 20) {
-                    // Title
                     Text(fundamental.title)
                         .font(.system(size: 32, weight: .bold, design: .default))
                         .foregroundColor(.white)
                         .lineLimit(3)
                     
-                    // Description
                     Text(fundamental.description)
                         .font(.system(size: 16, weight: .regular, design: .default))
                         .foregroundColor(.white.opacity(0.85))
@@ -60,7 +53,6 @@ struct FundamentalCardView: View {
                     Divider()
                         .background(Color.white.opacity(0.2))
                     
-                    // Key Points
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Key Points")
                             .font(.system(size: 14, weight: .semibold, design: .default))
@@ -90,7 +82,6 @@ struct FundamentalCardView: View {
                 
                 Spacer()
                 
-                // Bottom indicator
                 VStack {
                     HStack {
                         Text("Scroll to learn more")

@@ -42,7 +42,6 @@ struct ContentView: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .ignoresSafeArea()
                 
-                // Progress indicator
                 VStack {
                     HStack {
                         Text("Scrollearn")
