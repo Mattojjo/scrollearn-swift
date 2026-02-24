@@ -1,0 +1,802 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "title": "Single Responsibility Principle",
+    "description": "A class should have only one reason to change. Each class should have a single, well-defined responsibility.",
+    "category": "SOLID Principles",
+    "difficulty": "Beginner",
+    "keyPoints": ["One reason to change", "Focused responsibility", "Easier to test and maintain"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "title": "Open/Closed Principle",
+    "description": "Classes should be open for extension but closed for modification. Use inheritance and interfaces to extend functionality.",
+    "category": "SOLID Principles",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Extend via inheritance", "Don't modify original code", "Use abstractions"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "title": "Liskov Substitution Principle",
+    "description": "Derived classes must be substitutable for their base classes without altering program correctness.",
+    "category": "SOLID Principles",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Subclass compatibility", "Contract adherence", "Behavioral correctness"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440004",
+    "title": "Interface Segregation Principle",
+    "description": "Clients should not depend on interfaces they don't use. Create specific interfaces for specific needs.",
+    "category": "SOLID Principles",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Specific interfaces", "Avoid fat interfaces", "Client-focused design"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440005",
+    "title": "Dependency Inversion Principle",
+    "description": "Depend on abstractions, not concretions. High-level modules shouldn't depend on low-level modules.",
+    "category": "SOLID Principles",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Inject dependencies", "Use abstractions", "Decouple modules"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440006",
+    "title": "DRY - Don't Repeat Yourself",
+    "description": "Avoid duplicating logic. Extract common code into reusable functions or classes.",
+    "category": "Clean Code",
+    "difficulty": "Beginner",
+    "keyPoints": ["Eliminate duplication", "Reusable components", "Single source of truth"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440007",
+    "title": "KISS - Keep It Simple, Stupid",
+    "description": "Write simple, straightforward code. Avoid unnecessary complexity and over-engineering.",
+    "category": "Clean Code",
+    "difficulty": "Beginner",
+    "keyPoints": ["Simplicity first", "Avoid complexity", "Readable code"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440008",
+    "title": "YAGNI - You Aren't Gonna Need It",
+    "description": "Don't implement features you don't currently need. Focus on present requirements.",
+    "category": "Clean Code",
+    "difficulty": "Beginner",
+    "keyPoints": ["Avoid speculation", "Present needs only", "Reduce waste"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440009",
+    "title": "Singleton Pattern",
+    "description": "Ensures a class has only one instance and provides a global point of access to it.",
+    "category": "Design Patterns",
+    "difficulty": "Beginner",
+    "keyPoints": ["Single instance", "Global access", "Lazy initialization possible"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440010",
+    "title": "Factory Pattern",
+    "description": "Creates objects without specifying the exact classes. Uses factory methods to instantiate objects.",
+    "category": "Design Patterns",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Object creation", "Deferred instantiation", "Flexibility"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440011",
+    "title": "Observer Pattern",
+    "description": "Defines a one-to-many dependency where when one object changes, all dependents are notified.",
+    "category": "Design Patterns",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Event-driven", "Loose coupling", "Dynamic relationships"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440012",
+    "title": "Strategy Pattern",
+    "description": "Defines a family of interchangeable algorithms. Lets the algorithm vary independently.",
+    "category": "Design Patterns",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Algorithm encapsulation", "Runtime selection", "Flexibility"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440013",
+    "title": "Decorator Pattern",
+    "description": "Attaches additional responsibilities to an object dynamically. Alternative to subclassing.",
+    "category": "Design Patterns",
+    "difficulty": "Advanced",
+    "keyPoints": ["Dynamic behavior", "Wrapper approach", "Composition over inheritance"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440014",
+    "title": "Adapter Pattern",
+    "description": "Converts one interface to another. Allows incompatible interfaces to work together.",
+    "category": "Design Patterns",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Interface conversion", "Compatibility", "Legacy integration"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440015",
+    "title": "Binary Search",
+    "description": "Divides search interval by half. Works on sorted data with O(log n) complexity.",
+    "category": "Algorithms",
+    "difficulty": "Beginner",
+    "keyPoints": ["O(log n) complexity", "Sorted data required", "Efficient search"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440016",
+    "title": "Quick Sort",
+    "description": "Divides array using a pivot element. Average O(n log n) complexity, fast in practice.",
+    "category": "Algorithms",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Divide and conquer", "In-place sorting", "Average O(n log n)"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440017",
+    "title": "Merge Sort",
+    "description": "Divides array in half, sorts, then merges. Guaranteed O(n log n) complexity.",
+    "category": "Algorithms",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Divide and conquer", "Stable sorting", "O(n log n) guaranteed"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440018",
+    "title": "Depth-First Search",
+    "description": "Explores graph nodes by going as deep as possible before backtracking.",
+    "category": "Algorithms",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Graph traversal", "Stack-based", "Backtracking"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440019",
+    "title": "Breadth-First Search",
+    "description": "Explores graph level by level. Uses queue for neighbor exploration.",
+    "category": "Algorithms",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Graph traversal", "Queue-based", "Level exploration"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440020",
+    "title": "Dynamic Programming",
+    "description": "Solves problems by breaking them into overlapping subproblems with memoization.",
+    "category": "Algorithms",
+    "difficulty": "Advanced",
+    "keyPoints": ["Memoization", "Optimal substructure", "Efficiency"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440021",
+    "title": "Array/List Data Structure",
+    "description": "Contiguous memory storing indexed elements. Constant time access, variable insertion/deletion.",
+    "category": "Data Structures",
+    "difficulty": "Beginner",
+    "keyPoints": ["O(1) access", "O(n) insertion", "Contiguous memory"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440022",
+    "title": "Linked List",
+    "description": "Nodes linked via pointers. O(n) access, O(1) insertion/deletion at known position.",
+    "category": "Data Structures",
+    "difficulty": "Beginner",
+    "keyPoints": ["Node-based", "O(1) insertion", "O(n) access"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440023",
+    "title": "Hash Table",
+    "description": "Uses hash function to map keys to values. Average O(1) access, space-time tradeoff.",
+    "category": "Data Structures",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Key-value pairs", "O(1) average access", "Collision handling"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440024",
+    "title": "Stack",
+    "description": "Last-In-First-Out (LIFO) structure. Push and pop in constant time.",
+    "category": "Data Structures",
+    "difficulty": "Beginner",
+    "keyPoints": ["LIFO principle", "O(1) push/pop", "Function call stack"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440025",
+    "title": "Queue",
+    "description": "First-In-First-Out (FIFO) structure. Enqueue and dequeue in constant time.",
+    "category": "Data Structures",
+    "difficulty": "Beginner",
+    "keyPoints": ["FIFO principle", "O(1) enqueue/dequeue", "Task scheduling"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440026",
+    "title": "Binary Tree",
+    "description": "Tree where each node has at most two children. Foundation for many tree applications.",
+    "category": "Data Structures",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Parent-child relationship", "Two children max", "Hierarchical structure"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440027",
+    "title": "Binary Search Tree",
+    "description": "Binary tree where left child < parent < right child. Enables efficient searching.",
+    "category": "Data Structures",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Sorted property", "O(log n) average search", "Self-balancing variants"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440028",
+    "title": "Graph",
+    "description": "Collection of nodes/vertices connected by edges/links. Represents relationships.",
+    "category": "Data Structures",
+    "difficulty": "Advanced",
+    "keyPoints": ["Vertices and edges", "Directed/undirected", "Cyclic/acyclic"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440029",
+    "title": "Unit Testing",
+    "description": "Tests individual functions/methods in isolation. Verifies correct behavior with assertions.",
+    "category": "Testing",
+    "difficulty": "Beginner",
+    "keyPoints": ["Isolated testing", "Fast execution", "High coverage"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440030",
+    "title": "Integration Testing",
+    "description": "Tests multiple components working together. Verifies component interactions.",
+    "category": "Testing",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Component interaction", "Slower than unit tests", "Real scenarios"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440031",
+    "title": "Mock Objects",
+    "description": "Simulates behavior of real objects in tests. Isolates units for testing.",
+    "category": "Testing",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Isolation", "Predicable behavior", "Testing dependencies"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440032",
+    "title": "Code Coverage",
+    "description": "Percentage of code executed by tests. Higher coverage indicates better testing.",
+    "category": "Testing",
+    "difficulty": "Beginner",
+    "keyPoints": ["Measurement metric", "Guide, not goal", "Statement/branch coverage"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440033",
+    "title": "Test-Driven Development",
+    "description": "Write tests first, then implementation. Red-Green-Refactor cycle.",
+    "category": "Testing",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Tests first", "Better design", "Red-Green-Refactor"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440034",
+    "title": "Naming Conventions",
+    "description": "Use clear, descriptive names for variables, functions, and classes.",
+    "category": "Clean Code",
+    "difficulty": "Beginner",
+    "keyPoints": ["Clarity", "Pronounceable names", "Avoid abbreviations"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440035",
+    "title": "Comments and Documentation",
+    "description": "Write clear comments explaining why, not what. Keep documentation updated.",
+    "category": "Clean Code",
+    "difficulty": "Beginner",
+    "keyPoints": ["Explain intent", "Avoid redundancy", "Keep current"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440036",
+    "title": "Function Length",
+    "description": "Keep functions small and focused. Easier to understand and test.",
+    "category": "Clean Code",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Single responsibility", "Readability", "Testability"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440037",
+    "title": "Error Handling",
+    "description": "Handle exceptions gracefully. Provide meaningful error messages and recovery.",
+    "category": "Clean Code",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Graceful degradation", "Meaningful messages", "Recovery paths"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440038",
+    "title": "Git Basics",
+    "description": "Version control system for tracking code changes. Commit, branch, merge operations.",
+    "category": "Version Control",
+    "difficulty": "Beginner",
+    "keyPoints": ["Commits", "Branching", "Merging"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440039",
+    "title": "Branching Strategy",
+    "description": "Plan for creating and managing branches. GitFlow, GitHub Flow are common strategies.",
+    "category": "Version Control",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Feature branches", "Release branches", "Collaborative development"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440040",
+    "title": "Pull Requests",
+    "description": "Request review of code changes before merging. Enables collaboration and quality control.",
+    "category": "Version Control",
+    "difficulty": "Beginner",
+    "keyPoints": ["Code review", "Discussion", "Quality gates"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440041",
+    "title": "Commit Best Practices",
+    "description": "Write atomic, descriptive commits. Each commit should represent a logical change.",
+    "category": "Version Control",
+    "difficulty": "Beginner",
+    "keyPoints": ["Atomic commits", "Descriptive messages", "Revertibility"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440042",
+    "title": "Time Complexity",
+    "description": "Measures how algorithm runtime grows with input size. O(n), O(log n), etc.",
+    "category": "Performance",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Big O notation", "Scalability", "Algorithm efficiency"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440043",
+    "title": "Space Complexity",
+    "description": "Measures how algorithm memory usage grows with input size.",
+    "category": "Performance",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Memory overhead", "Trade-offs", "Optimization"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440044",
+    "title": "Caching",
+    "description": "Store frequently accessed data to reduce lookup time. Improves performance.",
+    "category": "Performance",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Data locality", "Hit rate", "Cache invalidation"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440045",
+    "title": "Database Indexing",
+    "description": "Create indexes on frequently queried columns. Significantly speeds up queries.",
+    "category": "Performance",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Query optimization", "Faster lookups", "Trade-offs"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440046",
+    "title": "Load Balancing",
+    "description": "Distribute traffic across servers. Improves availability and performance.",
+    "category": "Performance",
+    "difficulty": "Advanced",
+    "keyPoints": ["Horizontal scaling", "Fault tolerance", "Distribution"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440047",
+    "title": "SQL Injection",
+    "description": "Attacker inserts malicious SQL code into input fields. Prevention: parameterized queries.",
+    "category": "Security",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Input validation", "Prepared statements", "Sanitization"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440048",
+    "title": "Cross-Site Scripting (XSS)",
+    "description": "Attacker injects scripts into web pages. Prevention: output encoding and input validation.",
+    "category": "Security",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Input validation", "Output encoding", "Content Security Policy"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440049",
+    "title": "Authentication",
+    "description": "Verifies user identity through credentials. Different from authorization.",
+    "category": "Security",
+    "difficulty": "Beginner",
+    "keyPoints": ["Identity verification", "Passwords/tokens", "MFA"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440050",
+    "title": "Authorization",
+    "description": "Determines what authenticated user can access. Role-based access control.",
+    "category": "Security",
+    "difficulty": "Beginner",
+    "keyPoints": ["Permission management", "Roles", "Access control"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440051",
+    "title": "Encryption",
+    "description": "Converts readable data to unreadable format using keys. Protects sensitive information.",
+    "category": "Security",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Symmetric/asymmetric", "Key management", "Data protection"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440052",
+    "title": "Relational Databases",
+    "description": "Organize data into tables with relationships. SQL is standard query language.",
+    "category": "Databases",
+    "difficulty": "Beginner",
+    "keyPoints": ["Tables and rows", "Relationships", "ACID properties"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440053",
+    "title": "NoSQL Databases",
+    "description": "Non-relational databases with flexible schemas. Better for unstructured data.",
+    "category": "Databases",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Document/key-value", "Scalability", "Flexible schema"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440054",
+    "title": "Database Normalization",
+    "description": "Organize data to reduce redundancy and improve consistency.",
+    "category": "Databases",
+    "difficulty": "Intermediate",
+    "keyPoints": ["First/Second/Third normal form", "Redundancy reduction", "Data integrity"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440055",
+    "title": "Transactions",
+    "description": "Group operations that must succeed or fail together. Ensures data consistency.",
+    "category": "Databases",
+    "difficulty": "Intermediate",
+    "keyPoints": ["ACID properties", "Atomicity", "Consistency"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440056",
+    "title": "REST API",
+    "description": "Architecture for building web services using HTTP methods and resources.",
+    "category": "Web Development",
+    "difficulty": "Beginner",
+    "keyPoints": ["HTTP methods", "Resource-based", "Stateless"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440057",
+    "title": "HTTP Status Codes",
+    "description": "Server responses indicating request outcome. 200-299 success, 400+ errors.",
+    "category": "Web Development",
+    "difficulty": "Beginner",
+    "keyPoints": ["2xx, 3xx, 4xx, 5xx", "Error handling", "Client communication"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440058",
+    "title": "Cookies and Sessions",
+    "description": "Store client/server state across requests. Different purposes and security considerations.",
+    "category": "Web Development",
+    "difficulty": "Intermediate",
+    "keyPoints": ["State management", "Client vs server storage", "Security"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440059",
+    "title": "CORS - Cross-Origin Resource Sharing",
+    "description": "Allows requests from different domains. Prevents unauthorized cross-origin access.",
+    "category": "Web Development",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Same-origin policy", "Preflight requests", "Headers"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440060",
+    "title": "MVC Architecture",
+    "description": "Separates application into Model, View, Controller. Improves organization and testability.",
+    "category": "Architecture",
+    "difficulty": "Beginner",
+    "keyPoints": ["Separation of concerns", "Reusability", "Testing"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440061",
+    "title": "Microservices",
+    "description": "Break application into small, independent services. Increases flexibility and scalability.",
+    "category": "Architecture",
+    "difficulty": "Advanced",
+    "keyPoints": ["Decoupling", "Independent deployment", "Complexity"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440062",
+    "title": "Monolithic Architecture",
+    "description": "Single, unified application with all components tightly coupled.",
+    "category": "Architecture",
+    "difficulty": "Beginner",
+    "keyPoints": ["Single codebase", "Tight coupling", "Simpler to deploy initially"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440063",
+    "title": "Layered Architecture",
+    "description": "Organize application into layers (presentation, business, data). Separation of concerns.",
+    "category": "Architecture",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Layer separation", "Dependency flow", "Maintainability"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440064",
+    "title": "Dependency Injection",
+    "description": "Provide objects with their dependencies. Improves testability and reduces coupling.",
+    "category": "Architecture",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Loose coupling", "Testability", "Constructor/setter injection"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440065",
+    "title": "OAuth 2.0",
+    "description": "Authorization framework for delegated access. Allows third-party apps to access resources.",
+    "category": "Security",
+    "difficulty": "Advanced",
+    "keyPoints": ["Third-party authorization", "Tokens", "Scope-based access"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440066",
+    "title": "API Rate Limiting",
+    "description": "Restrict number of requests from clients. Prevents abuse and ensures fair usage.",
+    "category": "Performance",
+    "difficulty": "Intermediate",
+    "keyPoints": ["DDoS prevention", "Fair usage", "Throttling"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440067",
+    "title": "Continuous Integration",
+    "description": "Automatically test and integrate code changes. Catches issues early.",
+    "category": "DevOps",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Automated testing", "Frequent integration", "Early feedback"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440068",
+    "title": "Continuous Deployment",
+    "description": "Automatically deploy code to production. Enables rapid release cycles.",
+    "category": "DevOps",
+    "difficulty": "Advanced",
+    "keyPoints": ["Automated releases", "Production updates", "High confidence required"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440069",
+    "title": "Docker Containers",
+    "description": "Package application with dependencies in containers. Ensures consistency across environments.",
+    "category": "DevOps",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Containerization", "Isolation", "Portability"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440070",
+    "title": "Kubernetes Orchestration",
+    "description": "Manages containerized applications at scale. Handles deployment, scaling, and networking.",
+    "category": "DevOps",
+    "difficulty": "Advanced",
+    "keyPoints": ["Container orchestration", "Auto-scaling", "Self-healing"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440071",
+    "title": "Regex - Regular Expressions",
+    "description": "Pattern matching for text. Powerful for validation and parsing.",
+    "category": "Fundamentals",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Pattern matching", "Validation", "Text parsing"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440072",
+    "title": "Object-Oriented Programming",
+    "description": "Design paradigm using objects with properties and methods. Supports inheritance and polymorphism.",
+    "category": "Fundamentals",
+    "difficulty": "Beginner",
+    "keyPoints": ["Objects/classes", "Inheritance", "Polymorphism"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440073",
+    "title": "Functional Programming",
+    "description": "Paradigm using functions as first-class values. Emphasizes immutability and pure functions.",
+    "category": "Fundamentals",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Pure functions", "Immutability", "Higher-order functions"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440074",
+    "title": "Recursion",
+    "description": "Function calls itself with simpler inputs. Useful for tree/graph problems.",
+    "category": "Fundamentals",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Base case", "Recursive case", "Stack overflow risk"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440075",
+    "title": "Polymorphism",
+    "description": "Objects of different types respond to same message differently.",
+    "category": "Fundamentals",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Method overriding", "Method overloading", "Subtype flexibility"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440076",
+    "title": "Encapsulation",
+    "description": "Bundle data and methods together, hiding internal details. Controls access.",
+    "category": "Fundamentals",
+    "difficulty": "Beginner",
+    "keyPoints": ["Data hiding", "Access control", "Implementation hiding"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440077",
+    "title": "Abstraction",
+    "description": "Hide complexity behind simple interface. Users work with abstractions, not implementations.",
+    "category": "Fundamentals",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Simplification", "Interface focus", "Implementation independence"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440078",
+    "title": "Inheritance",
+    "description": "Create new classes from existing ones. Promotes code reuse and hierarchy.",
+    "category": "Fundamentals",
+    "difficulty": "Beginner",
+    "keyPoints": ["Parent/child classes", "Code reuse", "Hierarchy"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440079",
+    "title": "Composition over Inheritance",
+    "description": "Favor composition to build complex objects. More flexible than inheritance.",
+    "category": "Fundamentals",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Object composition", "Flexibility", "Avoid fragile base class"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440080",
+    "title": "Thread Safety",
+    "description": "Code that works correctly with multiple threads. No race conditions or data corruption.",
+    "category": "Fundamentals",
+    "difficulty": "Advanced",
+    "keyPoints": ["Locks", "Synchronization", "Atomicity"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440081",
+    "title": "Race Conditions",
+    "description": "Unintended behavior when threads access shared data simultaneously.",
+    "category": "Fundamentals",
+    "difficulty": "Advanced",
+    "keyPoints": ["Concurrent access", "Synchronization needed", "Non-deterministic"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440082",
+    "title": "Deadlock",
+    "description": "Threads waiting for each other indefinitely. Prevents progress.",
+    "category": "Fundamentals",
+    "difficulty": "Advanced",
+    "keyPoints": ["Circular dependency", "Prevention strategies", "Hold-and-wait"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440083",
+    "title": "Async/Await",
+    "description": "Write asynchronous code that looks synchronous. Improves readability.",
+    "category": "Fundamentals",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Non-blocking", "Promise-based", "Sequential appearance"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440084",
+    "title": "Callbacks",
+    "description": "Pass function as argument to be called later. Foundation for asynchronous programming.",
+    "category": "Fundamentals",
+    "difficulty": "Beginner",
+    "keyPoints": ["Function argument", "Delayed execution", "Callback hell risk"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440085",
+    "title": "Promises",
+    "description": "Represent eventual result of async operation. Better than callbacks.",
+    "category": "Fundamentals",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Async result", "Chaining", "Error handling"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440086",
+    "title": "Memory Leaks",
+    "description": "Unreleased memory accumulates over time. Causes performance degradation.",
+    "category": "Fundamentals",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Resource management", "Garbage collection", "Reference cycles"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440087",
+    "title": "Garbage Collection",
+    "description": "Automatically reclaim memory of unused objects. Simplifies memory management.",
+    "category": "Fundamentals",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Automatic cleanup", "Performance impact", "Pause time"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440088",
+    "title": "Polymorphic Dispatch",
+    "description": "Choose method implementation based on object type at runtime.",
+    "category": "Fundamentals",
+    "difficulty": "Advanced",
+    "keyPoints": ["Virtual methods", "Runtime resolution", "Dynamic binding"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440089",
+    "title": "Template Method Pattern",
+    "description": "Define algorithm skeleton, let subclasses fill in steps.",
+    "category": "Design Patterns",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Algorithm structure", "Subclass customization", "Inversion of control"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440090",
+    "title": "State Pattern",
+    "description": "Encapsulate object behavior that varies with state.",
+    "category": "Design Patterns",
+    "difficulty": "Advanced",
+    "keyPoints": ["State encapsulation", "Behavior variation", "Simplifies conditionals"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440091",
+    "title": "Facade Pattern",
+    "description": "Provide simplified interface to complex subsystem.",
+    "category": "Design Patterns",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Simplified interface", "Decoupling", "Subsystem wrapper"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440092",
+    "title": "Builder Pattern",
+    "description": "Construct complex objects step by step. Separates construction from representation.",
+    "category": "Design Patterns",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Step-by-step construction", "Readable code", "Flexibility"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440093",
+    "title": "Prototype Pattern",
+    "description": "Create objects by copying existing prototype. Avoids expensive creation.",
+    "category": "Design Patterns",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Object cloning", "Performance", "Shallow vs deep copy"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440094",
+    "title": "Chain of Responsibility",
+    "description": "Pass request along chain of handlers. Each decides to handle or pass along.",
+    "category": "Design Patterns",
+    "difficulty": "Advanced",
+    "keyPoints": ["Request passing", "Handler chain", "Loose coupling"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440095",
+    "title": "Command Pattern",
+    "description": "Encapsulate request as object. Allows parameterization and queuing.",
+    "category": "Design Patterns",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Request encapsulation", "Undo/redo", "Queuing"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440096",
+    "title": "Visitor Pattern",
+    "description": "Represent operation to be performed on elements of object structure.",
+    "category": "Design Patterns",
+    "difficulty": "Advanced",
+    "keyPoints": ["Operation abstraction", "Traversal", "Element independence"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440097",
+    "title": "Iterator Pattern",
+    "description": "Access elements of collection sequentially without exposing structure.",
+    "category": "Design Patterns",
+    "difficulty": "Intermediate",
+    "keyPoints": ["Sequential access", "Structure hiding", "Multiple iterations"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440098",
+    "title": "Mediator Pattern",
+    "description": "Encapsulate how objects interact. Reduces coupling between communicating objects.",
+    "category": "Design Patterns",
+    "difficulty": "Advanced",
+    "keyPoints": ["Communication hub", "Loose coupling", "Centralized control"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440099",
+    "title": "Memento Pattern",
+    "description": "Capture and externalize object state without violating encapsulation.",
+    "category": "Design Patterns",
+    "difficulty": "Advanced",
+    "keyPoints": ["State capture", "Undo mechanism", "Encapsulation"]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440100",
+    "title": "Proxy Pattern",
+    "description": "Provide surrogate or placeholder for another object. Controls access.",
+    "category": "Design Patterns",
+    "difficulty": "Advanced",
+    "keyPoints": ["Access control", "Lazy loading", "Logging/caching"]
+  }
+]
