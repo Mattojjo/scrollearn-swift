@@ -14,8 +14,8 @@ struct FundamentalCardView: View {
         ZStack {
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color(red: 0.1, green: 0.1, blue: 0.2),
-                    Color(red: 0.15, green: 0.15, blue: 0.25)
+                    Color(red: 0.12, green: 0.12, blue: 0.12),
+                    Color(red: 0.08, green: 0.08, blue: 0.08)
                 ]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -26,7 +26,7 @@ struct FundamentalCardView: View {
                 HStack {
                     Text(fundamental.category)
                         .font(.caption)
-                        .foregroundColor(.white.opacity(0.7))
+                        .foregroundColor(.gray)
                         .tracking(0.5)
                     
                     Spacer()
@@ -39,36 +39,38 @@ struct FundamentalCardView: View {
                 
                 Spacer()
                 
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .center, spacing: 20) {
                     Text(fundamental.title)
-                        .font(.system(size: 32, weight: .bold, design: .default))
-                        .foregroundColor(.white)
-                        .lineLimit(3)
+                        .font(.system(size: 48, weight: .bold, design: .default))
+                        .foregroundColor(.orange)
+                        .lineLimit(4)
+                        .multilineTextAlignment(.center)
                     
                     Text(fundamental.description)
-                        .font(.system(size: 16, weight: .regular, design: .default))
-                        .foregroundColor(.white.opacity(0.85))
-                        .lineLimit(4)
+                        .font(.system(size: 18, weight: .regular, design: .default))
+                        .foregroundColor(.gray)
+                        .lineLimit(5)
+                        .multilineTextAlignment(.center)
                     
                     Divider()
-                        .background(Color.white.opacity(0.2))
+                        .background(Color.gray.opacity(0.3))
                     
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Key Points")
                             .font(.system(size: 14, weight: .semibold, design: .default))
-                            .foregroundColor(.white.opacity(0.6))
+                            .foregroundColor(.gray)
                             .tracking(0.3)
                         
                         VStack(alignment: .leading, spacing: 8) {
                             ForEach(fundamental.keyPoints, id: \.self) { point in
                                 HStack(spacing: 10) {
                                     Image(systemName: "checkmark.circle.fill")
-                                        .foregroundColor(.cyan)
+                                        .foregroundColor(.orange)
                                         .font(.system(size: 12))
                                     
                                     Text(point)
                                         .font(.system(size: 14, weight: .regular, design: .default))
-                                        .foregroundColor(.white.opacity(0.8))
+                                        .foregroundColor(.gray)
                                         .lineLimit(2)
                                     
                                     Spacer()
@@ -86,13 +88,13 @@ struct FundamentalCardView: View {
                     HStack {
                         Text("Scroll to learn more")
                             .font(.caption)
-                            .foregroundColor(.white.opacity(0.5))
+                            .foregroundColor(.gray.opacity(0.6))
                         
                         Spacer()
                         
                         Image(systemName: "chevron.down")
                             .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(.white.opacity(0.5))
+                            .foregroundColor(.gray.opacity(0.6))
                     }
                     .padding(.horizontal, 24)
                     .padding(.bottom, 20)
@@ -105,17 +107,6 @@ struct FundamentalCardView: View {
 struct DifficultyBadge: View {
     let difficulty: Fundamental.Difficulty
     
-    var difficultyColor: Color {
-        switch difficulty {
-        case .beginner:
-            return .green
-        case .intermediate:
-            return .orange
-        case .advanced:
-            return .red
-        }
-    }
-    
     var body: some View {
         HStack(spacing: 6) {
             Image(systemName: "star.fill")
@@ -124,14 +115,14 @@ struct DifficultyBadge: View {
             Text(difficulty.rawValue)
                 .font(.system(size: 12, weight: .semibold, design: .default))
         }
-        .foregroundColor(.white)
+        .foregroundColor(.orange)
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
-        .background(difficultyColor.opacity(0.3))
+        .background(Color.orange.opacity(0.15))
         .cornerRadius(8)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(difficultyColor.opacity(0.5), lineWidth: 1)
+                .stroke(Color.orange.opacity(0.4), lineWidth: 1)
         )
     }
 }

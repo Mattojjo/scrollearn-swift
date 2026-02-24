@@ -17,16 +17,16 @@ struct ContentView: View {
             if fundamentals.isEmpty {
                 VStack(spacing: 16) {
                     ProgressView()
-                        .tint(.cyan)
+                        .tint(.orange)
                     Text("Loading fundamentals...")
-                        .foregroundColor(.white.opacity(0.6))
+                        .foregroundColor(.gray)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(
                     LinearGradient(
                         gradient: Gradient(colors: [
-                            Color(red: 0.1, green: 0.1, blue: 0.2),
-                            Color(red: 0.15, green: 0.15, blue: 0.25)
+                            Color(red: 0.12, green: 0.12, blue: 0.12),
+                            Color(red: 0.08, green: 0.08, blue: 0.08)
                         ]),
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
@@ -68,16 +68,16 @@ struct ContentView: View {
                     HStack {
                         Text("Scrollearn")
                             .font(.system(size: 18, weight: .bold, design: .default))
-                            .foregroundColor(.white)
+                            .foregroundColor(.gray)
                         
                         Spacer()
                         
                         Text("\(selectedIndex + 1) / \(fundamentals.count)")
                             .font(.system(size: 14, weight: .medium, design: .monospaced))
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundColor(.gray)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
-                            .background(Color.white.opacity(0.1))
+                            .background(Color.gray.opacity(0.1))
                             .cornerRadius(8)
                     }
                     .padding(.horizontal, 24)
