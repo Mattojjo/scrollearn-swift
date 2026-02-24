@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var fundamentals: [Fundamental] = []
     @State private var selectedIndex: Int = 0
+    @State private var dragOffset: CGFloat = 0
     
     var body: some View {
         ZStack {
@@ -33,14 +34,35 @@ struct ContentView: View {
                     .ignoresSafeArea()
                 )
             } else {
-                TabView(selection: $selectedIndex) {
-                    ForEach(Array(fundamentals.enumerated()), id: \.element.id) { index, fundamental in
-                        FundamentalCardView(fundamental: fundamental)
-                            .tag(index)
+                GeometryReader { geometry in
+                    ZStack(alignment: .top) {
+                        VStack(spacing: 0) {
+                            ForEach(Array(fundamentals.enumerated()), id: \.element.id) { index, fundamental in
+                                FundamentalCardView(fundamental: fundamental)
+                                    .frame(height: geometry.size.height)
+                            }
+                        }
+                        .offset(y: -CGFloat(selectedIndex) * geometry.size.height + dragOffset)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { value in
+                                    dragOffset = value.translation.height
+                                }
+                                .onEnded { value in
+                                    let threshold = geometry.size.height * 0.1
+                                    if value.translation.height < -threshold && selectedIndex < fundamentals.count - 1 {
+                                        selectedIndex += 1
+                                    } else if value.translation.height > threshold && selectedIndex > 0 {
+                                        selectedIndex -= 1
+                                    }
+                                    withAnimation(.easeInOut(duration: 0.3)) {
+                                        dragOffset = 0
+                                    }
+                                }
+                        )
                     }
+                    .ignoresSafeArea()
                 }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .ignoresSafeArea()
                 
                 VStack {
                     HStack {
@@ -59,7 +81,7 @@ struct ContentView: View {
                             .cornerRadius(8)
                     }
                     .padding(.horizontal, 24)
-                    .padding(.top, 16)
+                    .padding(.top, 60)
                     
                     Spacer()
                 }

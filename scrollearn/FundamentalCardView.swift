@@ -34,7 +34,7 @@ struct FundamentalCardView: View {
                     DifficultyBadge(difficulty: fundamental.difficulty)
                 }
                 .padding(.horizontal, 24)
-                .padding(.top, 20)
+                .padding(.top, 100)
                 .padding(.bottom, 10)
                 
                 Spacer()
