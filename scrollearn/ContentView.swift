@@ -7,44 +7,16 @@ struct ContentView: View {
     @State private var fundamentals: [Fundamental] = []
     @State private var selectedIndex: Int = 0
     @State private var dragOffset: CGFloat = 0
-    @State private var showIndexMenu: Bool = false
+    @State private var showIndexSheet: Bool = false
     @Environment(\.scenePhase) var scenePhase
 
-    private let maxVisibleItems = 15
     private let dragGestureThreshold: CGFloat = 20
 
     init(selectedDifficulty: Fundamental.Difficulty? = nil, isShuffleMode: Bool = false) {
         self.selectedDifficulty = selectedDifficulty
         self.isShuffleMode = isShuffleMode
     }
-
-    var body: some View {
-        ZStack {
-            if fundamentals.isEmpty {
-                loadingView
-            } else {
-                cardsView
-                topOverlay
-            }
-        }
-        .toolbar(.visible, for: .navigationBar)
-        .toolbarBackground(ThemeColors.cardBackground, for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
-        .onAppear {
-            loadFundamentals()
-        }
-        .onChange(of: selectedIndex) { _, newValue in
-            StorageManager.shared.saveLastIndex(newValue)
-        }
-        .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .background {
-                StorageManager.shared.saveLastIndex(selectedIndex)
-            }
-        }
-    }
-
-    // MARK: - View Components
-
+    
     private var loadingView: some View {
         VStack(spacing: ThemeSpacing.medium) {
             ProgressView()
@@ -83,107 +55,49 @@ struct ContentView: View {
         .zIndex(0)
     }
 
-    private var topOverlay: some View {
-        ZStack(alignment: .top) {
-            if showIndexMenu {
-                Color.black.opacity(0.001)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        showIndexMenu = false
-                    }
-            }
-
-            VStack(spacing: ThemeSpacing.small) {
-                HStack {
-                    Spacer()
-                    indexCounterButton
-                }
-                .padding(.horizontal, ThemeSpacing.large)
-                .padding(.top, ThemeSpacing.medium)
-
-                if showIndexMenu {
-                    HStack {
-                        Spacer()
-                        indexMenuView
-                    }
-                    .padding(.horizontal, ThemeSpacing.large)
-                }
-
-                Spacer()
+    var body: some View {
+        ZStack {
+            if fundamentals.isEmpty {
+                loadingView
+            } else {
+                cardsView
             }
         }
-        .zIndex(1000)
-    }
-
-
-    private var indexCounterButton: some View {
-        Text("\(selectedIndex + 1) / \(fundamentals.count)")
-            .font(ThemeTypography.indexCounter)
-            .foregroundColor(.gray)
-            .padding(.horizontal, ThemeSpacing.small)
-            .padding(.vertical, 6)
-            .background(Color.gray.opacity(0.1))
-            .cornerRadius(8)
-            .contentShape(Rectangle())
-            .onTapGesture {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    showIndexMenu.toggle()
-                }
-            }
-    }
-
-    private var indexMenuView: some View {
-        VStack(spacing: 0) {
-            ScrollViewReader { scrollProxy in
-                ScrollView {
-                    VStack(spacing: 0) {
-                        ForEach(0..<fundamentals.count, id: \.self) { index in
-                            indexMenuRow(for: index)
-                                .id(index)
-                                .onTapGesture {
-                                    selectedIndex = index
-                                    withAnimation {
-                                        showIndexMenu = false
-                                    }
-                                }
-
-                            if index < fundamentals.count - 1 {
-                                Divider()
-                                    .background(Color.gray.opacity(0.15))
-                                    .padding(.horizontal, ThemeSpacing.small)
-                            }
-                        }
-                    }
-                }
-                .onAppear {
-                    scrollProxy.scrollTo(selectedIndex, anchor: .center)
-                }
+        .toolbar(.visible, for: .navigationBar)
+        .toolbarBackground(ThemeColors.cardBackground, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                indexCounterMenu
             }
         }
-        .frame(maxHeight: CGFloat(min(fundamentals.count, maxVisibleItems)) * 44)
-        .background(ThemeColors.menuBackground)
-        .cornerRadius(10)
-        .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 4)
+        .sheet(isPresented: $showIndexSheet) {
+            IndexListView(
+                totalCount: fundamentals.count,
+                selectedIndex: $selectedIndex
+            )
+        }
+        .onAppear {
+            loadFundamentals()
+        }
+        .onChange(of: selectedIndex) { _, newValue in
+            StorageManager.shared.saveLastIndex(newValue)
+        }
     }
 
-    private func indexMenuRow(for index: Int) -> some View {
-        HStack {
-            Text("\(index + 1)")
-                .font(ThemeTypography.menuItem)
-                .foregroundColor(index == selectedIndex ? .orange : .gray)
-
-            Spacer()
-
-            if index == selectedIndex {
-                Image(systemName: "checkmark")
-                    .foregroundColor(.orange)
-                    .font(.system(size: 11, weight: .semibold))
-            }
+    private var indexCounterMenu: some View {
+        Button {
+            showIndexSheet = true
+        } label: {
+            Text("\(selectedIndex + 1) / \(fundamentals.count)")
+                .font(ThemeTypography.indexCounter)
+                .foregroundColor(.gray)
+                .padding(.horizontal, ThemeSpacing.small)
+                .padding(.vertical, 6)
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(8)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, ThemeSpacing.small)
-        .padding(.vertical, 10)
-        .background(index == selectedIndex ? Color.orange.opacity(0.12) : Color.clear)
+        .buttonStyle(.plain)
     }
 
     // MARK: - Helper Methods
@@ -218,6 +132,36 @@ struct ContentView: View {
             if savedIndex < fundamentals.count {
                 selectedIndex = savedIndex
             }
+        }
+    }
+}
+
+private struct IndexListView: View {
+    let totalCount: Int
+    @Binding var selectedIndex: Int
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            List {
+                ForEach(0..<totalCount, id: \.self) { index in
+                    Button {
+                        selectedIndex = index
+                        dismiss()
+                    } label: {
+                        HStack {
+                            Text("\(index + 1)")
+                            Spacer()
+                            if index == selectedIndex {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.orange)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Go to index")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
