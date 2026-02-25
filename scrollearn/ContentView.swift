@@ -1,16 +1,9 @@
-//
-//  ContentView.swift
-//  scrollearn
-//
-//  Created by Leinad Suarez on 2/24/26.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     var selectedDifficulty: Fundamental.Difficulty?
     var isShuffleMode: Bool
-    
+
     @State private var fundamentals: [Fundamental] = []
     @State private var selectedIndex: Int = 0
     @State private var dragOffset: CGFloat = 0
@@ -18,14 +11,14 @@ struct ContentView: View {
     @State private var showIndexMenu: Bool = false
     @State private var counterButtonWidth: CGFloat = 0
     @Environment(\.scenePhase) var scenePhase
-    
+
     private let maxVisibleItems = 15
-    
+
     init(selectedDifficulty: Fundamental.Difficulty? = nil, isShuffleMode: Bool = false) {
         self.selectedDifficulty = selectedDifficulty
         self.isShuffleMode = isShuffleMode
     }
-    
+
     var body: some View {
         ZStack {
             if fundamentals.isEmpty {
@@ -60,14 +53,14 @@ struct ContentView: View {
                         .offset(y: -CGFloat(selectedIndex) * geometry.size.height + dragOffset)
                         .animation(.easeInOut(duration: 0.4), value: selectedIndex)
                         .gesture(
-                            DragGesture()
+                            DragGesture(minimumDistance: 20)
                                 .onChanged { value in
                                     dragOffset = value.translation.height
                                 }
                                 .onEnded { value in
                                     let threshold = geometry.size.height * 0.15
                                     _ = value.predictedEndLocation.y - value.location.y
-                                    
+
                                     if value.translation.height < -threshold && selectedIndex < fundamentals.count - 1 {
                                         selectedIndex += 1
                                     } else if value.translation.height > threshold && selectedIndex > 0 {
@@ -79,27 +72,11 @@ struct ContentView: View {
                     }
                     .ignoresSafeArea()
                 }
-                
-                // Fixed title bar
-                VStack {
-                    HStack {
-                        Text("Scrollearn")
-                            .font(.system(size: 18, weight: .bold, design: .default))
-                            .foregroundColor(.gray)
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.top, 60)
-                    .padding(.bottom, 16)
-                    
-                    Spacer()
-                }
                 .ignoresSafeArea()
-                
+                .zIndex(0)
+
                 // Floating index counter with menu
                 ZStack {
-                    // Dismiss overlay
                     if showIndexMenu {
                         Color.black.opacity(0.001)
                             .ignoresSafeArea()
@@ -107,11 +84,11 @@ struct ContentView: View {
                                 showIndexMenu = false
                             }
                     }
-                    
+
                     VStack(alignment: .trailing, spacing: 0) {
                         HStack {
                             Spacer()
-                            
+
                             VStack(alignment: .trailing, spacing: 0) {
                                 Button(action: {
                                     showIndexMenu.toggle()
@@ -123,23 +100,25 @@ struct ContentView: View {
                                         .padding(.vertical, 6)
                                         .background(Color.gray.opacity(0.1))
                                         .cornerRadius(8)
-                                        .background(
-                                            GeometryReader { geometry in
-                                                Color.clear
-                                                    .preference(key: BadgeSizePreferenceKey.self, value: geometry.size)
-                                                    .preference(key: ButtonWidthPreferenceKey.self, value: geometry.size.width)
-                                            }
-                                        )
-                                        .onPreferenceChange(BadgeSizePreferenceKey.self) { newSize in
-                                            if newSize != .zero {
-                                                indexBadgeSize = newSize
-                                            }
-                                        }
-                                        .onPreferenceChange(ButtonWidthPreferenceKey.self) { newWidth in
-                                            counterButtonWidth = newWidth
-                                        }
+                                        .contentShape(Rectangle())
                                 }
-                                
+                                .buttonStyle(.plain)
+                                .background(
+                                    GeometryReader { geometry in
+                                        Color.clear
+                                            .preference(key: BadgeSizePreferenceKey.self, value: geometry.size)
+                                            .preference(key: ButtonWidthPreferenceKey.self, value: geometry.size.width)
+                                    }
+                                )
+                                .onPreferenceChange(BadgeSizePreferenceKey.self) { newSize in
+                                    if newSize != .zero {
+                                        indexBadgeSize = newSize
+                                    }
+                                }
+                                .onPreferenceChange(ButtonWidthPreferenceKey.self) { newWidth in
+                                    counterButtonWidth = newWidth
+                                }
+
                                 if showIndexMenu {
                                     ScrollViewReader { scrollProxy in
                                         ScrollView {
@@ -153,9 +132,9 @@ struct ContentView: View {
                                                             Text("\(index + 1)")
                                                                 .font(.system(size: 13, weight: .medium, design: .default))
                                                                 .foregroundColor(index == selectedIndex ? .orange : .gray)
-                                                            
+
                                                             Spacer()
-                                                            
+
                                                             if index == selectedIndex {
                                                                 Image(systemName: "checkmark")
                                                                     .foregroundColor(.orange)
@@ -166,9 +145,11 @@ struct ContentView: View {
                                                         .padding(.horizontal, 12)
                                                         .padding(.vertical, 10)
                                                         .background(index == selectedIndex ? Color.orange.opacity(0.12) : Color.clear)
+                                                        .contentShape(Rectangle())
                                                     }
+                                                    .buttonStyle(.plain)
                                                     .id(index)
-                                                    
+
                                                     if index < fundamentals.count - 1 {
                                                         Divider()
                                                             .background(Color.gray.opacity(0.15))
@@ -193,29 +174,28 @@ struct ContentView: View {
                         }
                         .padding(.horizontal, 24)
                         .padding(.top, 60)
-                        
+
                         Spacer()
                     }
-                    .ignoresSafeArea()
+                    .allowsHitTesting(true)
                 }
-                .ignoresSafeArea()
+                .zIndex(1000)
             }
         }
         .onAppear {
             loadFundamentals()
         }
-        .onChange(of: selectedIndex) { oldValue, newValue in
+        .onChange(of: selectedIndex) { _, newValue in
             StorageManager.shared.saveLastIndex(newValue)
         }
-        .onChange(of: scenePhase) { oldPhase, newPhase in
+        .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .background {
                 StorageManager.shared.saveLastIndex(selectedIndex)
             }
         }
     }
-    
+
     private func loadFundamentals() {
-        // Load fundamentals based on difficulty and shuffle mode
         if isShuffleMode {
             if let difficulty = selectedDifficulty {
                 fundamentals = FundamentalsManager.shared.loadShuffledFundamentals(difficulty: difficulty)
@@ -227,8 +207,7 @@ struct ContentView: View {
         } else {
             fundamentals = FundamentalsManager.shared.loadFundamentals()
         }
-        
-        // Load the last viewed index after fundamentals are loaded (only if not in shuffle mode)
+
         if !isShuffleMode {
             let savedIndex = StorageManager.shared.loadLastIndex()
             if savedIndex < fundamentals.count {
