@@ -20,7 +20,7 @@ struct ScrollearnApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
         }
     }
 }

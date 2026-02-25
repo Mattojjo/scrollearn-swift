@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    var selectedDifficulty: Fundamental.Difficulty?
+    var isShuffleMode: Bool
+    
     @State private var fundamentals: [Fundamental] = []
     @State private var selectedIndex: Int = 0
     @State private var dragOffset: CGFloat = 0
@@ -17,6 +20,11 @@ struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
     
     private let maxVisibleItems = 15
+    
+    init(selectedDifficulty: Fundamental.Difficulty? = nil, isShuffleMode: Bool = false) {
+        self.selectedDifficulty = selectedDifficulty
+        self.isShuffleMode = isShuffleMode
+    }
     
     var body: some View {
         ZStack {
@@ -207,11 +215,25 @@ struct ContentView: View {
     }
     
     private func loadFundamentals() {
-        fundamentals = FundamentalsManager.shared.loadFundamentals()
-        // Load the last viewed index after fundamentals are loaded
-        let savedIndex = StorageManager.shared.loadLastIndex()
-        if savedIndex < fundamentals.count {
-            selectedIndex = savedIndex
+        // Load fundamentals based on difficulty and shuffle mode
+        if isShuffleMode {
+            if let difficulty = selectedDifficulty {
+                fundamentals = FundamentalsManager.shared.loadShuffledFundamentals(difficulty: difficulty)
+            } else {
+                fundamentals = FundamentalsManager.shared.loadShuffledFundamentals()
+            }
+        } else if let difficulty = selectedDifficulty {
+            fundamentals = FundamentalsManager.shared.loadFundamentals(difficulty: difficulty)
+        } else {
+            fundamentals = FundamentalsManager.shared.loadFundamentals()
+        }
+        
+        // Load the last viewed index after fundamentals are loaded (only if not in shuffle mode)
+        if !isShuffleMode {
+            let savedIndex = StorageManager.shared.loadLastIndex()
+            if savedIndex < fundamentals.count {
+                selectedIndex = savedIndex
+            }
         }
     }
 }

@@ -12,6 +12,8 @@ class FundamentalsManager {
     
     private var cachedFundamentals: [Fundamental]?
     
+    // MARK: - Load All Fundamentals
+    
     func loadFundamentals() -> [Fundamental] {
         if let cached = cachedFundamentals {
             return cached
@@ -30,6 +32,29 @@ class FundamentalsManager {
             return []
         }
     }
+    
+    // MARK: - Filter by Difficulty
+    
+    func loadFundamentals(difficulty: Fundamental.Difficulty) -> [Fundamental] {
+        let allFundamentals = loadFundamentals()
+        return allFundamentals.filter { $0.difficulty == difficulty }
+    }
+    
+    // MARK: - Shuffle
+    
+    func loadShuffledFundamentals() -> [Fundamental] {
+        var fundamentals = loadFundamentals()
+        fundamentals.shuffle()
+        return fundamentals
+    }
+    
+    func loadShuffledFundamentals(difficulty: Fundamental.Difficulty) -> [Fundamental] {
+        var fundamentals = loadFundamentals(difficulty: difficulty)
+        fundamentals.shuffle()
+        return fundamentals
+    }
+    
+    // MARK: - Async Loading
     
     func loadFundamentalsAsync() async -> [Fundamental] {
         if let cached = cachedFundamentals {
