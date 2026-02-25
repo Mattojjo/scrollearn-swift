@@ -7,164 +7,154 @@
 
 import SwiftUI
 
-let cardBackground = Color(red: 0.10, green: 0.10, blue: 0.10)
-
 struct FundamentalCardView: View {
     let fundamental: Fundamental
-    let badgeSize: CGSize
-
-    init(fundamental: Fundamental, badgeSize: CGSize = .zero) {
-        self.fundamental = fundamental
-        self.badgeSize = badgeSize
-    }
+    @State private var animationTrigger: Bool = false
     
     var body: some View {
         ZStack {
-            cardBackground.ignoresSafeArea()
+            ThemeColors.cardBackground.ignoresSafeArea()
             
             VStack(spacing: 0) {
-                HStack {
-                    Text(fundamental.category)
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                        .tracking(0.5)
-                    
-                    Spacer()
-                    
-                    DifficultyBadge(
-                        difficulty: fundamental.difficulty,
-                        size: badgeSize
-                    )
-                }
-                .padding(.horizontal, 24)
-                .padding(.top, 120)
-                .padding(.bottom, 10)
-                
+                headerSection
+                contentSection
                 Spacer()
-                    .frame(height: 20)
-                
-                VStack(alignment: .center, spacing: 20) {
-                    Text(fundamental.title)
-                        .font(.system(size: 48, weight: .bold, design: .default))
-                        .foregroundColor(.orange)
-                        .lineLimit(4)
-                        .multilineTextAlignment(.center)
-                    
-                    Spacer()
-                        .frame(height: 10)
-                    
-                    Text(fundamental.description)
-                        .font(.system(size: 22, weight: .regular, design: .default))
-                        .foregroundColor(.gray)
-                        .lineLimit(5)
-                        .multilineTextAlignment(.center)
-                    
-                    Divider()
-                        .background(Color.gray.opacity(0.3))
-                    
-                    Spacer()
-                        .frame(height: 0)
-                    
-                    // Conditionally show code snippet or key points
-                    if let codeSnippet = fundamental.codeSnippet, !codeSnippet.isEmpty {
-                        VStack(alignment: .leading, spacing: 10) {
-                            HStack {
-                                Text("Code Example")
-                                    .font(.system(size: 16, weight: .semibold, design: .default))
-                                    .foregroundColor(.gray)
-                                    .tracking(0.3)
-                                
-                                Spacer()
-                                    .frame(height: 5)
-                                
-                                if let language = fundamental.language {
-                                    Text(language)
-                                        .font(.system(size: 11, weight: .medium, design: .monospaced))
-                                        .foregroundColor(.orange)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 3)
-                                        .background(Color.orange.opacity(0.15))
-                                        .cornerRadius(4)
-                                }
-                            }
-                            
-                            Text(codeSnippet)
-                                .font(.system(size: 16, weight: .regular, design: .monospaced))
-                                .foregroundColor(.orange)
-                                .padding(12)
-                                .background(Color.black.opacity(0.4))
-                                .cornerRadius(10)
-                                .frame( alignment: .leading)
-                                .lineLimit(nil)
-                        }
-                    } else {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Key Points")
-                                .font(.system(size: 16, weight: .semibold, design: .default))
-                                .foregroundColor(.gray)
-                                .tracking(0.3)
-                            
-                            VStack(alignment: .leading, spacing: 8) {
-                                ForEach(fundamental.keyPoints, id: \.self) { point in
-                                    HStack(spacing: 10) {
-                                        Image(systemName: "checkmark.circle.fill")
-                                            .foregroundColor(.orange)
-                                            .font(.system(size: 12))
-                                        
-                                        Text(point)
-                                            .font(.system(size: 14, weight: .regular, design: .default))
-                                            .foregroundColor(.gray)
-                                            .lineLimit(2)
-                                        
-                                        Spacer()
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                .padding(.horizontal, 24)
-                .padding(.vertical, 30)
-                
-                VStack {
-                    // Animated scroll indicator
-                    VStack(spacing: 4) {
-                        ForEach(0..<3) { index in
-                            Image(systemName: "chevron.down")
-                                .font(.system(size: 8, weight: .medium))
-                                .foregroundColor(.gray.opacity(0.4))
-                                .offset(y: scrollOffset(for: index))
-                                .animation(
-                                    Animation.easeInOut(duration: 1.5)
-                                        .repeatForever(autoreverses: false)
-                                        .delay(Double(index) * 0.2),
-                                    value: animationTrigger
-                                )
-                        }
-                    }
-                    .padding(.bottom, 20)
-                    .onAppear {
-                        animationTrigger = true
-                    }
-                }
-                
-                Spacer()
-                    .frame(height: 30)
+                scrollIndicator
             }
         }
         .drawingGroup()
     }
-    
-    @State private var animationTrigger: Bool = false
-    
-    private func scrollOffset(for index: Int) -> CGFloat {
-        animationTrigger ? 6 : 0
+
+    // MARK: - Subviews
+
+    private var headerSection: some View {
+        HStack {
+            Text(fundamental.category)
+                .font(.caption)
+                .foregroundColor(.gray)
+                .tracking(0.5)
+            
+            Spacer()
+            
+            DifficultyBadge(difficulty: fundamental.difficulty)
+        }
+        .padding(.horizontal, ThemeSpacing.large)
+        .padding(.top, ThemeSpacing.xlarge + 12)
+        .padding(.bottom, ThemeSpacing.medium)
+    }
+
+    private var contentSection: some View {
+        VStack(alignment: .center, spacing: 16) {
+            Text(fundamental.title)
+                .font(ThemeTypography.title)
+                .foregroundColor(.orange)
+                .lineLimit(4)
+                .multilineTextAlignment(.center)
+            
+            Text(fundamental.description)
+                .font(ThemeTypography.subtitle)
+                .foregroundColor(.gray)
+                .lineLimit(5)
+                .multilineTextAlignment(.center)
+            
+            Divider()
+                .background(Color.gray.opacity(0.3))
+            
+            if let codeSnippet = fundamental.codeSnippet, !codeSnippet.isEmpty {
+                codeExampleSection(codeSnippet)
+            } else {
+                keyPointsSection
+            }
+        }
+        .padding(.horizontal, ThemeSpacing.large)
+        .padding(.vertical, ThemeSpacing.medium)
+    }
+
+    private func codeExampleSection(_ codeSnippet: String) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("Code Example")
+                    .font(ThemeTypography.sectionTitle)
+                    .foregroundColor(.gray)
+                    .tracking(0.3)
+                
+                Spacer()
+                
+                if let language = fundamental.language {
+                    Text(language)
+                        .font(.system(size: 11, weight: .medium, design: .monospaced))
+                        .foregroundColor(.orange)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(Color.orange.opacity(0.15))
+                        .cornerRadius(4)
+                }
+            }
+            
+            Text(codeSnippet)
+                .font(.system(size: 16, weight: .regular, design: .monospaced))
+                .foregroundColor(.orange)
+                .padding(12)
+                .background(Color.black.opacity(0.4))
+                .cornerRadius(10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .lineLimit(nil)
+        }
+    }
+
+    private var keyPointsSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Key Points")
+                .font(ThemeTypography.sectionTitle)
+                .foregroundColor(.gray)
+                .tracking(0.3)
+            
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(fundamental.keyPoints, id: \.self) { point in
+                    HStack(spacing: 10) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(.orange)
+                            .font(.system(size: 12))
+                        
+                        Text(point)
+                            .font(.system(size: 14, weight: .regular, design: .default))
+                            .foregroundColor(.gray)
+                            .lineLimit(2)
+                        
+                        Spacer()
+                    }
+                }
+            }
+        }
+    }
+
+    private var scrollIndicator: some View {
+        VStack(spacing: 4) {
+            ForEach(0..<3, id: \.self) { index in
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 8, weight: .medium))
+                    .foregroundColor(.gray.opacity(0.4))
+                    .offset(y: animationTrigger ? 6 : 0)
+                    .animation(
+                        Animation.easeInOut(duration: 1.5)
+                            .repeatForever(autoreverses: false)
+                            .delay(Double(index) * 0.2),
+                        value: animationTrigger
+                    )
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.bottom, 20)
+        .onAppear {
+            animationTrigger = true
+        }
     }
 }
 
+// MARK: - Difficulty Badge
+
 struct DifficultyBadge: View {
     let difficulty: Fundamental.Difficulty
-    let size: CGSize
     
     var body: some View {
         HStack(spacing: 6) {
@@ -177,11 +167,6 @@ struct DifficultyBadge: View {
                 .foregroundColor(.orange)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
-                .frame(
-                    width: size.width > 0 ? size.width : nil,
-                    height: size.height > 0 ? size.height : nil,
-                    alignment: .center
-                )
                 .background(Color.orange.opacity(0.15))
                 .cornerRadius(8)
                 .overlay(
@@ -202,7 +187,6 @@ struct DifficultyBadge: View {
             keyPoints: ["One reason to change", "Focused responsibility", "Easier to test and maintain"],
             codeSnippet: "class User {\n  func save() { }\n}\n\nclass UserRepository {\n  func save(user: User) { }\n}",
             language: "Swift"
-        ),
-        badgeSize: CGSize(width: 96, height: 28)
+        )
     )
 }

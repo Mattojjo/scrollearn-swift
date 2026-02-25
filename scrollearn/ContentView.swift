@@ -7,12 +7,11 @@ struct ContentView: View {
     @State private var fundamentals: [Fundamental] = []
     @State private var selectedIndex: Int = 0
     @State private var dragOffset: CGFloat = 0
-    @State private var indexBadgeSize: CGSize = .zero
     @State private var showIndexMenu: Bool = false
-    @State private var counterButtonWidth: CGFloat = 0
     @Environment(\.scenePhase) var scenePhase
 
     private let maxVisibleItems = 15
+    private let dragGestureThreshold: CGFloat = 20
 
     init(selectedDifficulty: Fundamental.Difficulty? = nil, isShuffleMode: Bool = false) {
         self.selectedDifficulty = selectedDifficulty
@@ -22,166 +21,13 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             if fundamentals.isEmpty {
-                VStack(spacing: 16) {
-                    ProgressView()
-                        .tint(.orange)
-                    Text("Loading fundamentals...")
-                        .foregroundColor(.gray)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            Color(red: 0.12, green: 0.12, blue: 0.12),
-                            Color(red: 0.08, green: 0.08, blue: 0.08)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    .ignoresSafeArea()
-                )
+                loadingView
             } else {
-                GeometryReader { geometry in
-                    ZStack(alignment: .top) {
-                        VStack(spacing: 0) {
-                            ForEach(Array(fundamentals.enumerated()), id: \.element.id) { index, fundamental in
-                                FundamentalCardView(fundamental: fundamental, badgeSize: indexBadgeSize)
-                                    .frame(height: geometry.size.height)
-                                    .id(index)
-                            }
-                        }
-                        .offset(y: -CGFloat(selectedIndex) * geometry.size.height + dragOffset)
-                        .animation(.easeInOut(duration: 0.4), value: selectedIndex)
-                        .gesture(
-                            DragGesture(minimumDistance: 20)
-                                .onChanged { value in
-                                    dragOffset = value.translation.height
-                                }
-                                .onEnded { value in
-                                    let threshold = geometry.size.height * 0.15
-                                    _ = value.predictedEndLocation.y - value.location.y
-
-                                    if value.translation.height < -threshold && selectedIndex < fundamentals.count - 1 {
-                                        selectedIndex += 1
-                                    } else if value.translation.height > threshold && selectedIndex > 0 {
-                                        selectedIndex -= 1
-                                    }
-                                    dragOffset = 0
-                                }
-                        )
-                    }
-                    .ignoresSafeArea()
-                }
-                .ignoresSafeArea()
-                .zIndex(0)
-
-                // Floating index counter with menu
-                ZStack {
-                    if showIndexMenu {
-                        Color.black.opacity(0.001)
-                            .ignoresSafeArea()
-                            .onTapGesture {
-                                showIndexMenu = false
-                            }
-                    }
-
-                    VStack(alignment: .trailing, spacing: 0) {
-                        HStack {
-                            Spacer()
-
-                            VStack(alignment: .trailing, spacing: 0) {
-                                Button(action: {
-                                    showIndexMenu.toggle()
-                                }) {
-                                    Text("\(selectedIndex + 1) / \(fundamentals.count)")
-                                        .font(.system(size: 14, weight: .medium, design: .monospaced))
-                                        .foregroundColor(.gray)
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 6)
-                                        .background(Color.gray.opacity(0.1))
-                                        .cornerRadius(8)
-                                        .contentShape(Rectangle())
-                                }
-                                .buttonStyle(.plain)
-                                .background(
-                                    GeometryReader { geometry in
-                                        Color.clear
-                                            .preference(key: BadgeSizePreferenceKey.self, value: geometry.size)
-                                            .preference(key: ButtonWidthPreferenceKey.self, value: geometry.size.width)
-                                    }
-                                )
-                                .onPreferenceChange(BadgeSizePreferenceKey.self) { newSize in
-                                    if newSize != .zero {
-                                        indexBadgeSize = newSize
-                                    }
-                                }
-                                .onPreferenceChange(ButtonWidthPreferenceKey.self) { newWidth in
-                                    counterButtonWidth = newWidth
-                                }
-
-                                if showIndexMenu {
-                                    ScrollViewReader { scrollProxy in
-                                        ScrollView {
-                                            VStack(spacing: 0) {
-                                                ForEach(0..<fundamentals.count, id: \.self) { index in
-                                                    Button(action: {
-                                                        selectedIndex = index
-                                                        showIndexMenu = false
-                                                    }) {
-                                                        HStack {
-                                                            Text("\(index + 1)")
-                                                                .font(.system(size: 13, weight: .medium, design: .default))
-                                                                .foregroundColor(index == selectedIndex ? .orange : .gray)
-
-                                                            Spacer()
-
-                                                            if index == selectedIndex {
-                                                                Image(systemName: "checkmark")
-                                                                    .foregroundColor(.orange)
-                                                                    .font(.system(size: 11, weight: .semibold))
-                                                            }
-                                                        }
-                                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                                        .padding(.horizontal, 12)
-                                                        .padding(.vertical, 10)
-                                                        .background(index == selectedIndex ? Color.orange.opacity(0.12) : Color.clear)
-                                                        .contentShape(Rectangle())
-                                                    }
-                                                    .buttonStyle(.plain)
-                                                    .id(index)
-
-                                                    if index < fundamentals.count - 1 {
-                                                        Divider()
-                                                            .background(Color.gray.opacity(0.15))
-                                                            .padding(.horizontal, 8)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        .onAppear {
-                                            scrollProxy.scrollTo(selectedIndex, anchor: .top)
-                                        }
-                                    }
-                                    .frame(height: CGFloat(min(fundamentals.count, maxVisibleItems)) * 44)
-                                    .background(Color(red: 0.13, green: 0.13, blue: 0.13))
-                                    .cornerRadius(10)
-                                    .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 4)
-                                    .padding(.top, 8)
-                                    .frame(width: counterButtonWidth)
-                                    .zIndex(1)
-                                }
-                            }
-                        }
-                        .padding(.horizontal, 24)
-                        .padding(.top, 60)
-
-                        Spacer()
-                    }
-                    .allowsHitTesting(true)
-                }
-                .zIndex(1000)
+                cardsView
+                topOverlay
             }
         }
+        .toolbar(.visible, for: .navigationBar)
         .onAppear {
             loadFundamentals()
         }
@@ -193,6 +39,164 @@ struct ContentView: View {
                 StorageManager.shared.saveLastIndex(selectedIndex)
             }
         }
+    }
+
+    // MARK: - View Components
+
+    private var loadingView: some View {
+        VStack(spacing: ThemeSpacing.medium) {
+            ProgressView()
+                .tint(.orange)
+            Text("Loading fundamentals...")
+                .foregroundColor(.gray)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(ThemeColors.background.ignoresSafeArea())
+    }
+
+    private var cardsView: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .top) {
+                VStack(spacing: 0) {
+                    ForEach(Array(fundamentals.enumerated()), id: \.element.id) { index, fundamental in
+                        FundamentalCardView(fundamental: fundamental)
+                            .frame(height: geometry.size.height)
+                            .id(index)
+                    }
+                }
+                .offset(y: -CGFloat(selectedIndex) * geometry.size.height + dragOffset)
+                .animation(.easeInOut(duration: 0.4), value: selectedIndex)
+                .gesture(
+                    DragGesture(minimumDistance: dragGestureThreshold)
+                        .onChanged { value in
+                            dragOffset = value.translation.height
+                        }
+                        .onEnded { value in
+                            handleDragEnd(value, screenHeight: geometry.size.height)
+                        }
+                )
+            }
+            .ignoresSafeArea()
+        }
+        .ignoresSafeArea()
+        .zIndex(0)
+    }
+
+    private var topOverlay: some View {
+        ZStack(alignment: .top) {
+            if showIndexMenu {
+                Color.black.opacity(0.001)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        showIndexMenu = false
+                    }
+            }
+
+            VStack(spacing: ThemeSpacing.small) {
+                HStack {
+                    Spacer()
+                    indexCounterButton
+                }
+                .padding(.horizontal, ThemeSpacing.large)
+                .padding(.top, ThemeSpacing.medium)
+
+                if showIndexMenu {
+                    HStack {
+                        Spacer()
+                        indexMenuView
+                    }
+                    .padding(.horizontal, ThemeSpacing.large)
+                }
+
+                Spacer()
+            }
+        }
+        .zIndex(1000)
+    }
+
+
+    private var indexCounterButton: some View {
+        Text("\(selectedIndex + 1) / \(fundamentals.count)")
+            .font(ThemeTypography.indexCounter)
+            .foregroundColor(.gray)
+            .padding(.horizontal, ThemeSpacing.small)
+            .padding(.vertical, 6)
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(8)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    showIndexMenu.toggle()
+                }
+            }
+    }
+
+    private var indexMenuView: some View {
+        VStack(spacing: 0) {
+            ScrollViewReader { scrollProxy in
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(0..<fundamentals.count, id: \.self) { index in
+                            indexMenuRow(for: index)
+                                .id(index)
+                                .onTapGesture {
+                                    selectedIndex = index
+                                    withAnimation {
+                                        showIndexMenu = false
+                                    }
+                                }
+
+                            if index < fundamentals.count - 1 {
+                                Divider()
+                                    .background(Color.gray.opacity(0.15))
+                                    .padding(.horizontal, ThemeSpacing.small)
+                            }
+                        }
+                    }
+                }
+                .onAppear {
+                    scrollProxy.scrollTo(selectedIndex, anchor: .center)
+                }
+            }
+        }
+        .frame(maxHeight: CGFloat(min(fundamentals.count, maxVisibleItems)) * 44)
+        .background(ThemeColors.menuBackground)
+        .cornerRadius(10)
+        .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 4)
+    }
+
+    private func indexMenuRow(for index: Int) -> some View {
+        HStack {
+            Text("\(index + 1)")
+                .font(ThemeTypography.menuItem)
+                .foregroundColor(index == selectedIndex ? .orange : .gray)
+
+            Spacer()
+
+            if index == selectedIndex {
+                Image(systemName: "checkmark")
+                    .foregroundColor(.orange)
+                    .font(.system(size: 11, weight: .semibold))
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, ThemeSpacing.small)
+        .padding(.vertical, 10)
+        .background(index == selectedIndex ? Color.orange.opacity(0.12) : Color.clear)
+    }
+
+    // MARK: - Helper Methods
+
+    private func handleDragEnd(_ value: DragGesture.Value, screenHeight: CGFloat) {
+        let threshold = screenHeight * 0.15
+
+        if value.translation.height < -threshold && selectedIndex < fundamentals.count - 1 {
+            selectedIndex += 1
+        } else if value.translation.height > threshold && selectedIndex > 0 {
+            selectedIndex -= 1
+        }
+
+        dragOffset = 0
     }
 
     private func loadFundamentals() {
@@ -214,22 +218,6 @@ struct ContentView: View {
                 selectedIndex = savedIndex
             }
         }
-    }
-}
-
-private struct BadgeSizePreferenceKey: PreferenceKey {
-    static var defaultValue: CGSize = .zero
-
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
-        value = nextValue()
-    }
-}
-
-private struct ButtonWidthPreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
     }
 }
 

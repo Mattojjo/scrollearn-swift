@@ -14,81 +14,81 @@ struct DifficultySelectionView: View {
     
     var body: some View {
         ZStack {
-            // Background gradient
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color(red: 0.12, green: 0.12, blue: 0.12),
-                    Color(red: 0.08, green: 0.08, blue: 0.08)
-                ]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            ThemeColors.background.ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // Title
-                VStack(spacing: 8) {
-                    Text("Select Difficulty")
-                        .font(.system(size: 32, weight: .bold, design: .default))
-                        .foregroundColor(.white)
-                    
-                    Text("Choose your learning level")
-                        .font(.system(size: 16, weight: .regular, design: .default))
-                        .foregroundColor(.gray)
-                }
-                .padding(.top, 80)
-                .padding(.bottom, 60)
+                titleSection
+                    .padding(.top, 80)
+                    .padding(.bottom, 60)
                 
-                // Difficulty buttons
-                VStack(spacing: 16) {
-                    MinimalDifficultyButton(
-                        title: "Beginner",
-                        icon: "star.fill",
-                        accentColor: .green
-                    ) {
-                        onDifficultySelected(.beginner)
-                        dismiss()
-                    }
-                    
-                    MinimalDifficultyButton(
-                        title: "Intermediate",
-                        icon: "star.leadinghalf.filled",
-                        accentColor: .orange
-                    ) {
-                        onDifficultySelected(.intermediate)
-                        dismiss()
-                    }
-                    
-                    MinimalDifficultyButton(
-                        title: "Advanced",
-                        icon: "star.circle.fill",
-                        accentColor: .red
-                    ) {
-                        onDifficultySelected(.advanced)
-                        dismiss()
-                    }
-                    
-                    // Divider
-                    Rectangle()
-                        .fill(Color.white.opacity(0.1))
-                        .frame(height: 1)
-                        .padding(.vertical, 8)
-                    
-                    // Shuffle button
-                    MinimalDifficultyButton(
-                        title: "Shuffle All",
-                        icon: "shuffle",
-                        accentColor: .purple
-                    ) {
-                        onShuffleSelected()
-                        dismiss()
-                    }
-                }
-                .padding(.horizontal, 48)
+                difficultyOptionsSection
                 
                 Spacer()
             }
         }
+    }
+
+    // MARK: - View Components
+
+    private var titleSection: some View {
+        VStack(spacing: 8) {
+            Text("Select Difficulty")
+                .font(.system(size: 32, weight: .bold, design: .default))
+                .foregroundColor(.white)
+            
+            Text("Choose your learning level")
+                .font(.system(size: 16, weight: .regular, design: .default))
+                .foregroundColor(.gray)
+        }
+    }
+
+    private var difficultyOptionsSection: some View {
+        VStack(spacing: ThemeSpacing.medium) {
+            MinimalDifficultyButton(
+                title: "Beginner",
+                icon: "star.fill",
+                accentColor: .green,
+                action: {
+                    onDifficultySelected(.beginner)
+                    dismiss()
+                }
+            )
+            
+            MinimalDifficultyButton(
+                title: "Intermediate",
+                icon: "star.leadinghalf.filled",
+                accentColor: .orange,
+                action: {
+                    onDifficultySelected(.intermediate)
+                    dismiss()
+                }
+            )
+            
+            MinimalDifficultyButton(
+                title: "Advanced",
+                icon: "star.circle.fill",
+                accentColor: .red,
+                action: {
+                    onDifficultySelected(.advanced)
+                    dismiss()
+                }
+            )
+            
+            Divider()
+                .background(Color.white.opacity(0.1))
+                .padding(.vertical, 8)
+            
+            MinimalDifficultyButton(
+                title: "Shuffle All",
+                icon: "shuffle",
+                accentColor: .purple,
+                action: {
+                    onShuffleSelected()
+                    dismiss()
+                }
+            )
+        }
+        .padding(.horizontal, 48)
     }
 }
 
@@ -130,11 +130,7 @@ struct MinimalDifficultyButton: View {
 
 #Preview {
     DifficultySelectionView(
-        onDifficultySelected: { difficulty in
-            print("Selected: \(String(describing: difficulty))")
-        },
-        onShuffleSelected: {
-            print("Shuffle selected")
-        }
+        onDifficultySelected: { _ in },
+        onShuffleSelected: { }
     )
 }
