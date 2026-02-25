@@ -14,6 +14,8 @@ struct Fundamental: Identifiable, Codable {
     let category: String
     let difficulty: Difficulty
     let keyPoints: [String]
+    let codeSnippet: String?
+    let language: String?
     
     enum Difficulty: String, Codable {
         case beginner = "Beginner"
@@ -21,12 +23,14 @@ struct Fundamental: Identifiable, Codable {
         case advanced = "Advanced"
     }
     
-    init(id: UUID = UUID(), title: String, description: String, category: String, difficulty: Difficulty, keyPoints: [String]) {
+    init(id: UUID = UUID(), title: String, description: String, category: String, difficulty: Difficulty, keyPoints: [String], codeSnippet: String? = nil, language: String? = nil) {
         self.id = id
         self.title = title
         self.description = description
         self.category = category
         self.difficulty = difficulty
         self.keyPoints = keyPoints
+        self.codeSnippet = codeSnippet
+        self.language = language
     }
 }

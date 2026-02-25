@@ -5,7 +5,9 @@
     "description": "A class should have only one reason to change. Each class should have a single, well-defined responsibility.",
     "category": "SOLID Principles",
     "difficulty": "Beginner",
-    "keyPoints": ["One reason to change", "Focused responsibility", "Easier to test and maintain"]
+    "keyPoints": ["One reason to change", "Focused responsibility", "Easier to test and maintain"],
+    "codeSnippet": "class User {\n  func save() { }\n}\n\nclass UserRepository {\n  func save(user: User) { }\n}",
+    "language": "Swift"
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440002",
@@ -69,7 +71,11 @@
     "description": "Ensures a class has only one instance and provides a global point of access to it.",
     "category": "Design Patterns",
     "difficulty": "Beginner",
-    "keyPoints": ["Single instance", "Global access", "Lazy initialization possible"]
+    "keyPoints": ["Single instance", "Global access", "Lazy initialization possible"],
+    "codeSnippet": "class Logger {\n  static let shared = Logger()\n  private init() { }\n  func log(_ msg: String) { }\n}",
+    "language": "Swift",
+    "codeSnippet": "class Logger {\n  static let shared = Logger()\n  private init() { }\n  func log(_ msg: String) { }\n}",
+    "language": "Swift"
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440010",
@@ -117,7 +123,9 @@
     "description": "Divides search interval by half. Works on sorted data with O(log n) complexity.",
     "category": "Algorithms",
     "difficulty": "Beginner",
-    "keyPoints": ["O(log n) complexity", "Sorted data required", "Efficient search"]
+    "keyPoints": ["O(log n) complexity", "Sorted data required", "Efficient search"],
+    "codeSnippet": "func binarySearch(_ arr: [Int], target: Int) -> Int? {\n  var left = 0, right = arr.count - 1\n  while left <= right {\n    let mid = (left + right) / 2\n    if arr[mid] == target { return mid }\n    arr[mid] < target ? (left = mid + 1) : (right = mid - 1)\n  }\n  return nil\n}",
+    "language": "Swift"
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440016",
@@ -189,7 +197,11 @@
     "description": "Last-In-First-Out (LIFO) structure. Push and pop in constant time.",
     "category": "Data Structures",
     "difficulty": "Beginner",
-    "keyPoints": ["LIFO principle", "O(1) push/pop", "Function call stack"]
+    "keyPoints": ["LIFO principle", "O(1) push/pop", "Function call stack"],
+    "codeSnippet": "class Stack<T> {\n  private var items: [T] = []\n  func push(_ item: T) { items.append(item) }\n  func pop() -> T? { items.popLast() }\n  func peek() -> T? { items.last }\n}",
+    "language": "Swift",
+    "codeSnippet": "class Stack<T> {\n  private var items: [T] = []\n  func push(_ item: T) { items.append(item) }\n  func pop() -> T? { items.popLast() }\n  func peek() -> T? { items.last }\n}",
+    "language": "Swift"
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440025",
@@ -589,7 +601,9 @@
     "description": "Function calls itself with simpler inputs. Useful for tree/graph problems.",
     "category": "Fundamentals",
     "difficulty": "Intermediate",
-    "keyPoints": ["Base case", "Recursive case", "Stack overflow risk"]
+    "keyPoints": ["Base case", "Recursive case", "Stack overflow risk"],
+    "codeSnippet": "func factorial(_ n: Int) -> Int {\n  if n <= 1 { return 1 }\n  return n * factorial(n - 1)\n}\n\nprint(factorial(5)) // 120",
+    "language": "Swift"
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440075",

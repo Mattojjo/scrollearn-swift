@@ -12,7 +12,11 @@ struct ContentView: View {
     @State private var selectedIndex: Int = 0
     @State private var dragOffset: CGFloat = 0
     @State private var indexBadgeSize: CGSize = .zero
+    @State private var showIndexMenu: Bool = false
+    @State private var counterButtonWidth: CGFloat = 0
     @Environment(\.scenePhase) var scenePhase
+    
+    private let maxVisibleItems = 15
     
     var body: some View {
         ZStack {
@@ -68,6 +72,7 @@ struct ContentView: View {
                     .ignoresSafeArea()
                 }
                 
+                // Fixed title bar
                 VStack {
                     HStack {
                         Text("Scrollearn")
@@ -75,30 +80,115 @@ struct ContentView: View {
                             .foregroundColor(.gray)
                         
                         Spacer()
-                        
-                        Text("\(selectedIndex + 1) / \(fundamentals.count)")
-                            .font(.system(size: 14, weight: .medium, design: .monospaced))
-                            .foregroundColor(.gray)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
-                            .background(Color.gray.opacity(0.1))
-                            .cornerRadius(8)
-                            .background(
-                                GeometryReader { geometry in
-                                    Color.clear
-                                        .preference(key: BadgeSizePreferenceKey.self, value: geometry.size)
-                                }
-                            )
-                            .onPreferenceChange(BadgeSizePreferenceKey.self) { newSize in
-                                if newSize != .zero {
-                                    indexBadgeSize = newSize
-                                }
-                            }
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 60)
+                    .padding(.bottom, 16)
                     
                     Spacer()
+                }
+                .ignoresSafeArea()
+                
+                // Floating index counter with menu
+                ZStack {
+                    // Dismiss overlay
+                    if showIndexMenu {
+                        Color.black.opacity(0.001)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                showIndexMenu = false
+                            }
+                    }
+                    
+                    VStack(alignment: .trailing, spacing: 0) {
+                        HStack {
+                            Spacer()
+                            
+                            VStack(alignment: .trailing, spacing: 0) {
+                                Button(action: {
+                                    showIndexMenu.toggle()
+                                }) {
+                                    Text("\(selectedIndex + 1) / \(fundamentals.count)")
+                                        .font(.system(size: 14, weight: .medium, design: .monospaced))
+                                        .foregroundColor(.gray)
+                                        .padding(.horizontal, 12)
+                                        .padding(.vertical, 6)
+                                        .background(Color.gray.opacity(0.1))
+                                        .cornerRadius(8)
+                                        .background(
+                                            GeometryReader { geometry in
+                                                Color.clear
+                                                    .preference(key: BadgeSizePreferenceKey.self, value: geometry.size)
+                                                    .preference(key: ButtonWidthPreferenceKey.self, value: geometry.size.width)
+                                            }
+                                        )
+                                        .onPreferenceChange(BadgeSizePreferenceKey.self) { newSize in
+                                            if newSize != .zero {
+                                                indexBadgeSize = newSize
+                                            }
+                                        }
+                                        .onPreferenceChange(ButtonWidthPreferenceKey.self) { newWidth in
+                                            counterButtonWidth = newWidth
+                                        }
+                                }
+                                
+                                if showIndexMenu {
+                                    ScrollViewReader { scrollProxy in
+                                        ScrollView {
+                                            VStack(spacing: 0) {
+                                                ForEach(0..<fundamentals.count, id: \.self) { index in
+                                                    Button(action: {
+                                                        selectedIndex = index
+                                                        showIndexMenu = false
+                                                    }) {
+                                                        HStack {
+                                                            Text("\(index + 1)")
+                                                                .font(.system(size: 13, weight: .medium, design: .default))
+                                                                .foregroundColor(index == selectedIndex ? .orange : .gray)
+                                                            
+                                                            Spacer()
+                                                            
+                                                            if index == selectedIndex {
+                                                                Image(systemName: "checkmark")
+                                                                    .foregroundColor(.orange)
+                                                                    .font(.system(size: 11, weight: .semibold))
+                                                            }
+                                                        }
+                                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                                        .padding(.horizontal, 12)
+                                                        .padding(.vertical, 10)
+                                                        .background(index == selectedIndex ? Color.orange.opacity(0.12) : Color.clear)
+                                                    }
+                                                    .id(index)
+                                                    
+                                                    if index < fundamentals.count - 1 {
+                                                        Divider()
+                                                            .background(Color.gray.opacity(0.15))
+                                                            .padding(.horizontal, 8)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        .onAppear {
+                                            scrollProxy.scrollTo(selectedIndex, anchor: .top)
+                                        }
+                                    }
+                                    .frame(height: CGFloat(min(fundamentals.count, maxVisibleItems)) * 44)
+                                    .background(Color(red: 0.13, green: 0.13, blue: 0.13))
+                                    .cornerRadius(10)
+                                    .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 4)
+                                    .padding(.top, 8)
+                                    .frame(width: counterButtonWidth)
+                                    .zIndex(1)
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.top, 60)
+                        
+                        Spacer()
+                    }
+                    .ignoresSafeArea()
                 }
                 .ignoresSafeArea()
             }
@@ -117,6 +207,14 @@ private struct BadgeSizePreferenceKey: PreferenceKey {
     static var defaultValue: CGSize = .zero
 
     static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+        value = nextValue()
+    }
+}
+
+private struct ButtonWidthPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
     }
 }

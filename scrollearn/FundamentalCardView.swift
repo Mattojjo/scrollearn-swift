@@ -31,13 +31,17 @@ struct FundamentalCardView: View {
                     
                     Spacer()
                     
-                    DifficultyBadge(difficulty: fundamental.difficulty, size: badgeSize)
+                    DifficultyBadge(
+                        difficulty: fundamental.difficulty,
+                        size: badgeSize
+                    )
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 120)
                 .padding(.bottom, 10)
                 
                 Spacer()
+                    .frame(height: 20)
                 
                 VStack(alignment: .center, spacing: 20) {
                     Text(fundamental.title)
@@ -59,27 +63,61 @@ struct FundamentalCardView: View {
                         .background(Color.gray.opacity(0.3))
                     
                     Spacer()
-                        .frame(height: 20)
+                        .frame(height: 0)
                     
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Key Points")
-                            .font(.system(size: 16, weight: .semibold, design: .default))
-                            .foregroundColor(.gray)
-                            .tracking(0.3)
-                        
-                        VStack(alignment: .leading, spacing: 8) {
-                            ForEach(fundamental.keyPoints, id: \.self) { point in
-                                HStack(spacing: 10) {
-                                    Image(systemName: "checkmark.circle.fill")
+                    // Conditionally show code snippet or key points
+                    if let codeSnippet = fundamental.codeSnippet, !codeSnippet.isEmpty {
+                        VStack(alignment: .leading, spacing: 10) {
+                            HStack {
+                                Text("Code Example")
+                                    .font(.system(size: 16, weight: .semibold, design: .default))
+                                    .foregroundColor(.gray)
+                                    .tracking(0.3)
+                                
+                                Spacer()
+                                    .frame(height: 5)
+                                
+                                if let language = fundamental.language {
+                                    Text(language)
+                                        .font(.system(size: 11, weight: .medium, design: .monospaced))
                                         .foregroundColor(.orange)
-                                        .font(.system(size: 12))
-                                    
-                                    Text(point)
-                                        .font(.system(size: 14, weight: .regular, design: .default))
-                                        .foregroundColor(.gray)
-                                        .lineLimit(2)
-                                    
-                                    Spacer()
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 3)
+                                        .background(Color.orange.opacity(0.15))
+                                        .cornerRadius(4)
+                                }
+                            }
+                            
+                            Text(codeSnippet)
+                                .font(.system(size: 16, weight: .regular, design: .monospaced))
+                                .foregroundColor(.orange)
+                                .padding(12)
+                                .background(Color.black.opacity(0.4))
+                                .cornerRadius(10)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .lineLimit(nil)
+                        }
+                    } else {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Key Points")
+                                .font(.system(size: 16, weight: .semibold, design: .default))
+                                .foregroundColor(.gray)
+                                .tracking(0.3)
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                ForEach(fundamental.keyPoints, id: \.self) { point in
+                                    HStack(spacing: 10) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .foregroundColor(.orange)
+                                            .font(.system(size: 12))
+                                        
+                                        Text(point)
+                                            .font(.system(size: 14, weight: .regular, design: .default))
+                                            .foregroundColor(.gray)
+                                            .lineLimit(2)
+                                        
+                                        Spacer()
+                                    }
                                 }
                             }
                         }
@@ -149,7 +187,9 @@ struct DifficultyBadge: View {
             description: "A class should have only one reason to change. Each class should have a single, well-defined responsibility.",
             category: "SOLID Principles",
             difficulty: .beginner,
-            keyPoints: ["One reason to change", "Focused responsibility", "Easier to test and maintain"]
+            keyPoints: ["One reason to change", "Focused responsibility", "Easier to test and maintain"],
+            codeSnippet: "class User {\n  func save() { }\n}\n\nclass UserRepository {\n  func save(user: User) { }\n}",
+            language: "Swift"
         ),
         badgeSize: CGSize(width: 96, height: 28)
     )
