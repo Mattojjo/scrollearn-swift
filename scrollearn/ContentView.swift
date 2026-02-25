@@ -81,7 +81,9 @@ struct ContentView: View {
             loadFundamentals()
         }
         .onChange(of: selectedIndex) { _, newValue in
-            StorageManager.shared.saveLastIndex(newValue)
+            Task {
+                StorageManager.shared.saveLastIndex(newValue)
+            }
         }
     }
 
@@ -91,11 +93,11 @@ struct ContentView: View {
         } label: {
             Text("\(selectedIndex + 1) / \(fundamentals.count)")
                 .font(ThemeTypography.indexCounter)
-                .foregroundColor(.gray)
-                .padding(.horizontal, ThemeSpacing.small)
+                .fontWeight(.semibold)
+                .foregroundColor(.white)
+                .padding(.horizontal, 12)
                 .padding(.vertical, 6)
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(8)
+                .clipShape(Capsule())
         }
         .buttonStyle(.plain)
     }
@@ -105,13 +107,15 @@ struct ContentView: View {
     private func handleDragEnd(_ value: DragGesture.Value, screenHeight: CGFloat) {
         let threshold = screenHeight * 0.15
 
-        if value.translation.height < -threshold && selectedIndex < fundamentals.count - 1 {
-            selectedIndex += 1
-        } else if value.translation.height > threshold && selectedIndex > 0 {
-            selectedIndex -= 1
-        }
+        withAnimation(.easeInOut(duration: 0.4)) {
+            if value.translation.height < -threshold && selectedIndex < fundamentals.count - 1 {
+                selectedIndex += 1
+            } else if value.translation.height > threshold && selectedIndex > 0 {
+                selectedIndex -= 1
+            }
 
-        dragOffset = 0
+            dragOffset = 0
+        }
     }
 
     private func loadFundamentals() {
