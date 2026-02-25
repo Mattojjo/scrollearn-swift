@@ -76,9 +76,7 @@ struct ContentView: View {
                         }
                 )
             }
-            .ignoresSafeArea()
         }
-        .ignoresSafeArea()
         .zIndex(0)
     }
 
