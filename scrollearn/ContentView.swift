@@ -196,10 +196,23 @@ struct ContentView: View {
         .onAppear {
             loadFundamentals()
         }
+        .onChange(of: selectedIndex) { oldValue, newValue in
+            StorageManager.shared.saveLastIndex(newValue)
+        }
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .background {
+                StorageManager.shared.saveLastIndex(selectedIndex)
+            }
+        }
     }
     
     private func loadFundamentals() {
         fundamentals = FundamentalsManager.shared.loadFundamentals()
+        // Load the last viewed index after fundamentals are loaded
+        let savedIndex = StorageManager.shared.loadLastIndex()
+        if savedIndex < fundamentals.count {
+            selectedIndex = savedIndex
+        }
     }
 }
 
