@@ -61,21 +61,20 @@ class FundamentalsManager {
             return cached
         }
         
-        return await Task.detached(priority: .high) { [weak self] () -> [Fundamental] in
-            guard let self = self,
-                  let url = Bundle.main.url(forResource: "fundamentals", withExtension: "json") else {
-                return []
-            }
-            
-            do {
-                let data = try Data(contentsOf: url)
-                let fundamentals = try JSONDecoder().decode([Fundamental].self, from: data)
+        guard let url = Bundle.main.url(forResource: "fundamentals", withExtension: "json") else {
+            return []
+        }
+        
+        do {
+            let data = try Data(contentsOf: url)
+            let fundamentals = try JSONDecoder().decode([Fundamental].self, from: data)
+            await MainActor.run {
                 self.cachedFundamentals = fundamentals
-                return fundamentals
-            } catch {
-                return []
             }
-        }.value
+            return fundamentals
+        } catch {
+            return []
+        }
     }
 }
 

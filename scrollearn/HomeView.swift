@@ -90,18 +90,12 @@ struct HomeView: View {
                     .frame(maxHeight: .infinity)
                     .padding(.bottom, 80)
                 }
-                
-                // Navigation
-                NavigationLink(
-                    destination: ContentView(
-                        selectedDifficulty: selectedDifficulty,
-                        isShuffleMode: isShuffleMode
-                    ),
-                    isActive: $navigateToContent
-                ) {
-                    EmptyView()
-                }
-                .hidden()
+            }
+            .navigationDestination(isPresented: $navigateToContent) {
+                ContentView(
+                    selectedDifficulty: selectedDifficulty,
+                    isShuffleMode: isShuffleMode
+                )
             }
             .sheet(isPresented: $showDifficultySelection) {
                 DifficultySelectionView(

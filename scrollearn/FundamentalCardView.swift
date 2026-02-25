@@ -94,7 +94,7 @@ struct FundamentalCardView: View {
                                 .padding(12)
                                 .background(Color.black.opacity(0.4))
                                 .cornerRadius(10)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .frame( alignment: .leading)
                                 .lineLimit(nil)
                         }
                     } else {
@@ -127,19 +127,25 @@ struct FundamentalCardView: View {
                 .padding(.vertical, 30)
                 
                 VStack {
-                    HStack {
-                        Text("Scroll to learn more")
-                            .font(.caption)
-                            .foregroundColor(.gray.opacity(0.6))
-                        
-                        Spacer()
-                        
-                        Image(systemName: "chevron.down")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(.gray.opacity(0.6))
+                    // Animated scroll indicator
+                    VStack(spacing: 4) {
+                        ForEach(0..<3) { index in
+                            Image(systemName: "chevron.down")
+                                .font(.system(size: 8, weight: .medium))
+                                .foregroundColor(.gray.opacity(0.4))
+                                .offset(y: scrollOffset(for: index))
+                                .animation(
+                                    Animation.easeInOut(duration: 1.5)
+                                        .repeatForever(autoreverses: false)
+                                        .delay(Double(index) * 0.2),
+                                    value: animationTrigger
+                                )
+                        }
                     }
-                    .padding(.horizontal, 24)
                     .padding(.bottom, 20)
+                    .onAppear {
+                        animationTrigger = true
+                    }
                 }
                 
                 Spacer()
@@ -147,6 +153,12 @@ struct FundamentalCardView: View {
             }
         }
         .drawingGroup()
+    }
+    
+    @State private var animationTrigger: Bool = false
+    
+    private func scrollOffset(for index: Int) -> CGFloat {
+        animationTrigger ? 6 : 0
     }
 }
 
