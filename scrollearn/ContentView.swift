@@ -28,6 +28,8 @@ struct ContentView: View {
             }
         }
         .toolbar(.visible, for: .navigationBar)
+        .toolbarBackground(ThemeColors.cardBackground, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .onAppear {
             loadFundamentals()
         }
@@ -76,6 +78,7 @@ struct ContentView: View {
                         }
                 )
             }
+            .clipped()
         }
         .zIndex(0)
     }
